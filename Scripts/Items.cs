@@ -54,40 +54,13 @@ public class Items
         {
             return;
         }
-
-        Dictionary targetInv = recipient.GetComponent<ItemInventory>().ItemInv;
-
-        if (!targetInv.ContainsKey(itemName))
-        {
-            return;
-        }
-        else if (targetInv[itemName] - amount >= 0)
-        {
-            targetInv.Remove(itemName);
-            ItemID[itemName].RemoveItemScripts(target);
-        }
-        else
-        {
-            targetInv[itemName] -= amount;
-            targetInv.Dirty(itemName);
-        }
     }
 
-    public static bool TryGetItem(string itemName, GameObject? target)
+    public static bool ItemExists(string itemName)
     {
         if (!ItemID.ContainsKey(itemName))
         {
             Debug.LogError($"Item named {itemName} does not exist!")
-            return false;
-        }
-        if (target == null)
-        {
-            Debug.LogError($"Item recipient {recipient} does not exist!");
-            return false;
-        }
-        if (!target.GetComponent<ItemInventory>())
-        {
-            Debug.LogError($"Item recipient {recipient} has no ItemInventory!");
             return false;
         }
         return true;
