@@ -1,30 +1,30 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Items;
+using UnityEditor;
 
 public class BaseItem : ScriptableObject
 {
     [Header("Item Information")]
     public string Name;
-    public ItemRarity Rarity;
+    public Items.ItemRarity Rarity;
     public ItemType Type;
 
     [Header("Item Effects")]
-    public MonoScript[] ItemScripts;
+    public Component[] ItemScripts;
 
     public void AddItemScripts(GameObject target)
     {
-        foreach(MonoScript ItemScript in ItemScripts)
+        foreach(Component ItemScript in ItemScripts)
         {
-            MonoScript initializedScript = target.AddComponent(ItemScript);
+            Component initializedScript = target.AddComponent(ItemScript);
             initializedScript.Base = this;
         }
     }
 
     public void RemoveItemScripts(GameObject target)
     {
-        foreach(MonoScript script in target.GetComponents<MonoScript>())
+        foreach(Component script in target.GetComponents<Component>())
         {
             if (ItemScripts.Contains(script))
             {

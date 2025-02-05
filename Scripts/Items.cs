@@ -26,7 +26,7 @@ public class Items
     public static Action<string itemName, GameObject target> OnItemAdd;
     public static Action<string itemName, GameObject target> OnItemRemove;
 
-    public static void AddItem(string itemName, GameObject target)
+    public static void AddItem(string itemName, GameObject target, int amount = 1)
     {
         if (!TryGetItem(itemName, target))
         {
@@ -37,17 +37,18 @@ public class Items
 
         if (!targetInv.ContainsKey(itemName))
         {
-            targetInv.Add(itemName, 1);
+            targetInv.Add(itemName, amount);
             ItemID[itemName].AddItemScripts(target)
+            targetInv.Dirty(itemName);
         }
         else
         {
-            targetInv[itemName] += 1;
-            targetInv.DirtyItems.Add(itemName);
+            targetInv[itemName] += amount;
+            targetInv.Dirty(itemName);
         }
     }
 
-    public static void RemoveItem(string itemName, GameObject target)
+    public static void RemoveItem(string itemName, GameObject target, int amount = 1)
     {
         if (!TryGetItem(itemName, recipient))
         {
@@ -60,15 +61,15 @@ public class Items
         {
             return;
         }
-        else if (targetInv[itemName] == 1)
+        else if (targetInv[itemName] - amount >= 0)
         {
             targetInv.Remove(itemName);
             ItemID[itemName].RemoveItemScripts(target);
         }
         else
         {
-            targetInv[itemName] -= 1;
-            targetInv.DirtyItems.Add(itemName);
+            targetInv[itemName] -= amount;
+            targetInv.Dirty(itemName);
         }
     }
 

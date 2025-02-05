@@ -3,7 +3,7 @@ using UnityEngine;
 public abstract virtual class BaseItemScript : MonoBehaviour
 {
     public ScriptableObject Base;
-    private MonoScript InvOwner;
+    private ItemInventory InvOwner;
 
     [SerializeField] private string itemName;
     private int count;
@@ -11,6 +11,19 @@ public abstract virtual class BaseItemScript : MonoBehaviour
     void Awake()
     {
         InvOwner = this.GameObject.GetComponent<ItemInventory>();
+    }
+
+    private void UpdateOnListDirtied(ItemInventory DirtyInv)
+    {
+        if (DirtyInv != InvOwner)
+        {
+            return;
+        }
+        if (!InvOwner.DirtyItems.Contains<string>(itemName))
+        {
+            return;
+        }
+        InvOwner.Undirty(itemName);
     }
 
     //Item Scripts destroy themself if their ItemInventory monoscript is destroyed
