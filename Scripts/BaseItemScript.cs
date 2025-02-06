@@ -1,19 +1,34 @@
 using UnityEngine;
 
-public abstract virtual class BaseItemScript : MonoBehaviour
+public abstract virtual class BaseItemSOItemScript : MonoBehaviour
 {
-    public ScriptableObject Base;
+    public ScriptableObject BaseItemSO;
     private ItemInventory InvOwner;
 
     [SerializeField] private string itemName;
-    private int count;
+    private int count => InvOwner.ItemInv[itemName];
 
-    void Awake()
+    virtual void Awake()
     {
         InvOwner = this.GameObject.GetComponent<ItemInventory>();
+        if (InvOwner == null)
+        {
+            BaseItemSO.RemoveItemScripts
+        }
+        InvOwner.OnItemInvDestroyed += OnInvOwnerDestroyed;
     }
 
-    private void UpdateOnListDirtied(ItemInventory DirtyInv)
+    virtual void OnDestroy()
+    {
+        InvOwner.OnItemInvDestroyed -= OnInvOwnerDestroyed;
+    }
+
+    virtual void Update()
+    {
+
+    }
+
+    private virtual void UpdateOnListDirtied(ItemInventory DirtyInv)
     {
         if (DirtyInv != InvOwner)
         {
@@ -26,12 +41,10 @@ public abstract virtual class BaseItemScript : MonoBehaviour
         InvOwner.Undirty(itemName);
     }
 
-    //Item Scripts destroy themself if their ItemInventory monoscript is destroyed
-    private void OnInvOwnerDestroyed(ItemInventory destroyedInv)
+    private virtual void OnInvOwnerDestroyed(ItemInventory destroyedInv)
     {
-        if (destroyedInv == InvOwner)
-        {
-            Destroy(this);
-        }
+        // Destroy self if somehow only the ItemInventory they belong to is destroyed
+        // If I understand correctly, it only subscribes to the ItemInventory's non-static destroyed event
+        Destroy(this);
     }
 }

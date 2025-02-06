@@ -27,8 +27,28 @@ public class ItemInventory : MonoBehaviour
     {
         OnItemInvDestroyed.Invoke(this);
     }
+    
+    public void AddItem(string itemName, int amount = 1)
+    {
+        if (!Items.ItemExists(itemName))
+        {
+            return;
+        }
 
-    public void RemoveItem(string ItemName)
+        if (!ItemInv.ContainsKey(itemName))
+        {
+            ItemInv.Add(itemName, amount);
+            Items.ItemID[itemName].AddItemScripts(target)
+            Dirty(itemName);
+        }
+        else
+        {
+            ItemInv[itemName] += amount;
+            Dirty(itemName);
+        }
+    }
+
+    public void RemoveItem(string ItemName, int amount = 1)
     {
         if (!Items.ItemExists(ItemName))
         {
@@ -39,7 +59,7 @@ public class ItemInventory : MonoBehaviour
             return;
         }
 
-        if (ItemInv[itemName] - amount >= 0)
+        if (ItemInv[itemName] - amount <= 0)
         {
             ItemInv.Remove(itemName);
             Items.ItemID[itemName].RemoveItemScripts(target);
