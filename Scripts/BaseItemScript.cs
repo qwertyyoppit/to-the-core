@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract virtual class BaseItemSOItemScript : MonoBehaviour
+public abstract class BaseItemSOItemScript : MonoBehaviour
 {
     public ScriptableObject BaseItemSO;
     private ItemInventory InvOwner;
@@ -8,28 +8,26 @@ public abstract virtual class BaseItemSOItemScript : MonoBehaviour
     [SerializeField] private string itemName;
     private int count => InvOwner.ItemInv[itemName];
 
-    virtual void Awake()
+    protected virtual void Awake()
     {
-        InvOwner = this.GameObject.GetComponent<ItemInventory>();
-        if (InvOwner == null)
+        if (!gameObject.GetComponent<ItemInventory>(out InvOwner))
         {
-            BaseItemSO.RemoveItemScripts
+            BaseItemSO.RemoveItemScripts(gameObject);
         }
-        InvOwner.OnItemInvDestroyed += OnInvOwnerDestroyed;
+        InvOwner.OnInventoryDirtied += UpdateOnListDirtied;
+        InvOwner.OnInventoryDestroyed += OnInvOwnerDestroyed;
     }
 
-    virtual void OnDestroy()
+    protected virtual void OnDestroy()
     {
-        InvOwner.OnItemInvDestroyed -= OnInvOwnerDestroyed;
+        InvOwner.OnInventoryDirtied -= UpdateOnListDirtied;
+        InvOwner.OnInventoryDestroyed -= OnInvOwnerDestroyed;
     }
 
-    virtual void Update()
-    {
+    protected virtual void Update();
 
-    }
-
-    private virtual void UpdateOnListDirtied(ItemInventory DirtyInv)
-    {
+    protected virtual void UpdateOnListDirtied(ItemInventory DirtyInv)
+    {   // Updates whenever their Inventory is modified
         if (DirtyInv != InvOwner)
         {
             return;
@@ -41,10 +39,8 @@ public abstract virtual class BaseItemSOItemScript : MonoBehaviour
         InvOwner.Undirty(itemName);
     }
 
-    private virtual void OnInvOwnerDestroyed(ItemInventory destroyedInv)
-    {
-        // Destroy self if somehow only the ItemInventory they belong to is destroyed
-        // If I understand correctly, it only subscribes to the ItemInventory's non-static destroyed event
+    protected virtual void OnInvOwnerDestroyed(ItemInventory destroyedInv)
+    {   // Destroy self if somehow only the ItemInventory they belong to is destroyed
         Destroy(this);
     }
 }

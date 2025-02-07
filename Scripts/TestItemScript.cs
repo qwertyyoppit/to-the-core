@@ -4,5 +4,9 @@ using UnityEdior;
 
 public override class TestItemScript : BaseItemScript
 {
-    
+    override void Awake()
+    {
+        base.Awake();
+        
+    }
 }

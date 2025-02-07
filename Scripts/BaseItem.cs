@@ -17,18 +17,21 @@ public class BaseItem : ScriptableObject
     {
         foreach(MonoScript ItemScript in ItemScripts)
         {
-            Component initializedScript = target.AddComponent(ItemScript.GetClass());
+            var initializedScript = (ItemScript.GetClass())target.AddComponent(ItemScript.GetClass());
             initializedScript.BaseItemSO = this;
         }
     }
 
     public void RemoveItemScripts(GameObject target)
     {
-        foreach(Component script in target.GetComponents<MonoBehaviour>())
+        foreach (MonoBehaviour script in target.GetComponents<MonoBehaviour>())
         {
-            if (ItemScripts.Contains(script))
+            foreach (ItemScript in ItemScripts)
             {
-                Destroy(script);
+                if (script.IsAssignableFrom(ItemScript))
+                {
+                    Destroy(script);
+                }
             }
         }
     }

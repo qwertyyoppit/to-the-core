@@ -6,9 +6,9 @@ public class ItemInventory : MonoBehaviour
 {
     public Dictionary<string, int> ItemInv = new Dictionary<string, int>();
     public List<string> DirtyItems = new List<string>();
-    public Action<ItemInventory> OnListDirtied;
+    public Action<ItemInventory> OnInventoryDirtied;
 
-    public Action<ItemInventory> OnItemInvDestroyed;
+    public Action<ItemInventory> OnInventoryDestroyed;
 
     void Awake()
     {
@@ -19,13 +19,13 @@ public class ItemInventory : MonoBehaviour
     {
         if (DirtyItems.Count > 0)
         {
-            OnListDirtied.Invoke(this);
+            OnInventoryDirtied.Invoke(this);
         }
     }
 
     void OnDestroy()
     {
-        OnItemInvDestroyed.Invoke(this);
+        OnInventoryDestroyed.Invoke(this);
     }
     
     public void AddItem(string itemName, int amount = 1)
@@ -36,13 +36,13 @@ public class ItemInventory : MonoBehaviour
         }
 
         if (!ItemInv.ContainsKey(itemName))
-        {
+        {   // New item entry if there was none for the given item
             ItemInv.Add(itemName, amount);
             Items.ItemID[itemName].AddItemScripts(target)
             Dirty(itemName);
         }
         else
-        {
+        {   // Else increment the preexisting entry for the given item
             ItemInv[itemName] += amount;
             Dirty(itemName);
         }
