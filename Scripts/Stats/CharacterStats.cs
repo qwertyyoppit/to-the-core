@@ -36,7 +36,7 @@ public class CharacterStats : MonoBehaviour
 
         foreach (StatMod mod in modifiersToApply)
         {
-            if (mod.Modifier == Stat.StatModifier.Add)
+            if (mod.Modifier == StatModifier.Add)
             {
                 _finalStatValues[mod.Type].Value += mod.Value;
                 modifiersToApply.Remove(mod);
@@ -44,7 +44,7 @@ public class CharacterStats : MonoBehaviour
         }
         foreach (StatMod mod in modifiersToApply)
         {
-            if (mod.Modifier == Stat.StatModifier.Multiply)
+            if (mod.Modifier == StatModifier.Multiply)
             {
                 _finalStatValues[mod.Type].Value *= mod.Value;
             }
