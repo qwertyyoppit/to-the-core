@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Items
 {
-    public static enum ItemRarity
+    public enum ItemRarity
     {
         None,
         Common,
@@ -12,7 +12,7 @@ public class Items
         Singular,
     }
 
-    public static enum ItemType
+    public enum ItemType
     {
         Passive,
         Movement,
@@ -21,23 +21,31 @@ public class Items
         Special,
     }
 
-    public static Dictionary<string, ScriptableObject> ItemID = new Dictionary<string ScriptableObject>(); //Add from resource get type when build for now
+    public static Dictionary<string, BaseItem> ItemID = new Dictionary<string, BaseItem>(); //Add from resource get type when build for now
+    public interface IItem
+    {
+        public string itemName { get; }
+        public ItemRarity Rarity { get; }
+        public ItemType Type { get; }
+        public int Count { get; }
+    }
 
     public static bool ItemExists(string itemName)
     {
         if (!ItemID.ContainsKey(itemName))
         {
-            Debug.LogError($"Item named {itemName} does not exist!")
+            Debug.LogError($"Item named {itemName} does not exist!");
             return false;
         }
         return true;
     }
 
-    public static ScriptableObject GetItemSO(string itemName)
+    public static BaseItem GetItemSO(string itemName)
     {
-        if (ItemID.ContainsKey(itemName))
+        if (!ItemID.ContainsKey(itemName))
         {
-            return ItemID[itemName];
+            return null;
         }
+        return ItemID[itemName];
     }
 }

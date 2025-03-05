@@ -1,37 +1,61 @@
-using System;
-using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
 using UnityEditor;
+using UnityEngine;
+using static Items;
 
+[CreateAssetMenu(menuName ="BaseItem")]
 public class BaseItem : ScriptableObject
 {
     [Header("Item Information")]
-    public string Name;
-    public Items.ItemRarity Rarity;
-    public Items.ItemType Type;
+    public string itemName;
+    public ItemRarity Rarity;
+    public ItemType Type;
 
     [Header("Item Effects")]
-    public MonoScript[] ItemScripts; //TODO: figure out what should be a MonoScript or a Component or MonoBehaviour...
+    public GameObject ItemPrefab;
+
+    private void OnEnable()
+    {
+        Items.ItemID.Add(itemName, this);
+    }
 
     public void AddItemScripts(GameObject target)
     {
-        foreach(MonoScript ItemScript in ItemScripts)
+        if (!target.TryGetComponent<ItemInventory>(out ItemInventory Inv))
         {
-            var initializedScript = (ItemScript.GetClass())target.AddComponent(ItemScript.GetClass());
-            initializedScript.BaseItemSO = this;
+            return;
         }
+
+        ItemHolder Holder = Inv.Holder;
+
+        if (!Holder)
+        {
+            Holder = Inv.CreateItemHolder().GetComponent<ItemHolder>();
+        }
+
+        Instantiate(ItemPrefab, Holder.transform);
     }
 
     public void RemoveItemScripts(GameObject target)
     {
-        foreach (MonoBehaviour script in target.GetComponents<MonoBehaviour>())
+        if (!target.TryGetComponent<ItemInventory>(out ItemInventory Inv))
         {
-            foreach (ItemScript in ItemScripts)
+            return;
+        }
+
+        ItemHolder Holder = Inv.Holder;
+
+        if (!Holder)
+        {
+            return;
+        }
+
+        foreach(GameObject ItemScript in Holder.ItemObjects)
+        {
+            if (ItemScript.GetComponent<IItem>().itemName == itemName)
             {
-                if (script.IsAssignableFrom(ItemScript))
-                {
-                    Destroy(script);
-                }
+                Holder.ItemObjects.Remove(ItemScript);
+                Destroy(ItemScript);
             }
         }
     }
