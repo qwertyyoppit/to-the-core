@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class CharacterStats : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class CharacterStats : MonoBehaviour
 
     void Awake()
     {
-        _characterBaseStats = _characterBaseStatSet.GetDictionary(); //todo: save new stat types instead of references so the SO isnt being modified (float instead of stat value?)
+        _characterBaseStats = Instantiate(_characterBaseStatSet).GetDictionary(); //todo: save new stat types instead of references so the SO isnt being modified (float instead of stat value?)
 
         UpdateStats();
     }
@@ -24,13 +25,18 @@ public class CharacterStats : MonoBehaviour
     {
         if (_dirty)
             UpdateStats();
+        Debug.Log("aaaa");
         return _characterStats[type].Value;
     }
 
     private void UpdateStats()
     {
-        _characterStats = _characterBaseStats;
-        List<StatMod> modifiersToApply = _baseStatModifiers;
+        _characterStats.Clear();
+        foreach (KeyValuePair<StatType, Stat> stat in _characterBaseStats)
+        {
+            _characterStats.Add(stat.Key, new Stat(stat.Value.Type, stat.Value.Value)); //UNTESTED TODO: TEST IT!!!!!!!!!!
+        }
+        List<StatMod> modifiersToApply = new (_baseStatModifiers);
 
         foreach (StatMod mod in modifiersToApply)
         {

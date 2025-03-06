@@ -28,7 +28,8 @@ public class ItemInventory : MonoBehaviour
 
     void OnDestroy()
     {
-        ItemInvDestroyed.Invoke(this);
+        if (this)
+            ItemInvDestroyed.Invoke(this);
     }
 
     public GameObject CreateItemHolder()

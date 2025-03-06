@@ -54,8 +54,8 @@ public class BaseItem : ScriptableObject
         {
             if (ItemScript.GetComponent<IItem>().itemName == itemName)
             {
-                Holder.ItemObjects.Remove(ItemScript);
                 Destroy(ItemScript);
+                return;
             }
         }
     }

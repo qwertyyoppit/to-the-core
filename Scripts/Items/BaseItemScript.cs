@@ -46,5 +46,6 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
         {
             InvOwner.ItemInv.Remove(itemName);
         }
+        InvOwner.Holder.ItemObjects.Remove(gameObject);
     }
 }

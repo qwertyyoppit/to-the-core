@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rotateSpeed = 5f;
 
     private bool _jumping = false;
-    private float jumpHeight => charStat.GetStat(StatType.JumpHeight);
+    private float JumpHeight => charStat.GetStat(StatType.JumpHeight);
     public float jumpMultiplier = 1.0f;
 
     Rigidbody rb;
@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
         if (movement != Vector3.zero)
         {
             Vector3 moveDir = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0) * movement; //Turn movement direction based on viewpoint direction
-            rb.MovePosition(rb.position + (speed * Time.fixedDeltaTime * moveDir));
+            rb.MovePosition(rb.position + (speed * Time.fixedDeltaTime * new Vector3(moveDir.x, 0, moveDir.z)));
             transform.forward = Vector3.Slerp(new(transform.forward.x, transform.forward.y, transform.forward.z), new(moveDir.x, transform.forward.y, moveDir.z), rotateSpeed * Time.fixedDeltaTime);
             if (!Grounded)
             {
@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_jumping)
         {
-            rb.AddForce(new Vector3(rb.linearVelocity.x, jumpHeight * jumpMultiplier, rb.linearVelocity.z), ForceMode.VelocityChange);
+            rb.AddForce(new Vector3(0, JumpHeight * jumpMultiplier, 0), ForceMode.Acceleration);
             _jumping = false;
         }
     }

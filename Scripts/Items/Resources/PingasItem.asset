@@ -15,4 +15,4 @@ MonoBehaviour:
   itemName: Pingas
   Rarity: 4
   Type: 0
-  ItemPrefab: {fileID: 6627741966185324639, guid: 50aef6172ef865244922272f18568e89, type: 3}
+  ItemPrefab: {fileID: 4631834890823188166, guid: 914aa3ca59138914c9091c1aa8c0bfb0, type: 3}
