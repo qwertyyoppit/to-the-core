@@ -6,6 +6,7 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
     public BaseItem BaseItemSO;
     protected PlayerController controller;
     protected ItemInventory InvOwner;
+    protected CharacterStats characterStats;
 
     public string itemName => BaseItemSO.itemName;
     public Items.ItemRarity Rarity => BaseItemSO.Rarity;
@@ -21,6 +22,7 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
             return;
         }
         controller = InvOwner.GetComponent<PlayerController>();
+        characterStats = InvOwner.GetComponent<CharacterStats>();
         InvOwner.Holder.ItemObjects.Add(gameObject);
     }
 

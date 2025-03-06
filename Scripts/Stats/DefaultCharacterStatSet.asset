@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DefaultCharacterStatSet
   m_EditorClassIdentifier: 
   StatList:
-  - Type: {fileID: 11400000, guid: 8f56fe903dc79ff4f97332157841676a, type: 2}
+  - Type: 1
     Value: 8
-  - Type: {fileID: 11400000, guid: 1305d1074a9a166429e15a996ff9fa43, type: 2}
+  - Type: 0
     Value: 7

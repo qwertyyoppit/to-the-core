@@ -6,13 +6,15 @@ public class PlayerController : MonoBehaviour
 {
     Vector3 movement;
 
+    CharacterStats charStat;
+
     public float speed = 5f;
     [SerializeField] private float midairMoveMult = 0.1f;
     [SerializeField] private float maxSpeed = 7f;
     [SerializeField] private float rotateSpeed = 5f;
 
     private bool _jumping = false;
-    [SerializeField] private float jumpHeight = 7f;
+    private float jumpHeight => charStat.GetStat(StatType.JumpHeight);
     public float jumpMultiplier = 1.0f;
 
     Rigidbody rb;
@@ -26,6 +28,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         capsule = GetComponent<CapsuleCollider>();
+        charStat = GetComponent<CharacterStats>();
     }
 
     private void FixedUpdate()
@@ -33,8 +36,7 @@ public class PlayerController : MonoBehaviour
         if (movement != Vector3.zero)
         {
             Vector3 moveDir = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0) * movement; //Turn movement direction based on viewpoint direction
-                //rb.MovePosition(rb.position + (speed * Time.fixedDeltaTime * moveDir));
-            rb.linearVelocity += speed * Time.fixedDeltaTime * moveDir;
+            rb.MovePosition(rb.position + (speed * Time.fixedDeltaTime * moveDir));
             transform.forward = Vector3.Slerp(new(transform.forward.x, transform.forward.y, transform.forward.z), new(moveDir.x, transform.forward.y, moveDir.z), rotateSpeed * Time.fixedDeltaTime);
             if (!Grounded)
             {
@@ -49,7 +51,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!Pause.paused)
         {
-            movement = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical")).normalized;
+            movement = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
 
             if (Input.GetButtonDown("Jump") && Grounded)
             {
