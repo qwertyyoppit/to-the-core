@@ -7,7 +7,7 @@ using static Items;
 public class BaseItem : ScriptableObject
 {
     [Header("Item Information")]
-    public string itemName;
+    public string ItemName;
     public ItemRarity Rarity;
     public ItemType Type;
 
@@ -16,7 +16,7 @@ public class BaseItem : ScriptableObject
 
     private void OnEnable()
     {
-        Items.ItemID.Add(itemName, this);
+        Items.ItemID.Add(ItemName, this);
     }
 
     public void AddItemScripts(GameObject target)
@@ -52,7 +52,7 @@ public class BaseItem : ScriptableObject
 
         foreach(GameObject ItemScript in Holder.ItemObjects)
         {
-            if (ItemScript.GetComponent<IItem>().itemName == itemName)
+            if (ItemScript.GetComponent<IItem>().ItemName == ItemName)
             {
                 Destroy(ItemScript);
                 return;

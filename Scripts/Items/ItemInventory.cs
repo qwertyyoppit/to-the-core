@@ -39,23 +39,23 @@ public class ItemInventory : MonoBehaviour
         return newHolder;
     }
 
-    public void AddItem(string itemName, int amount = 1)
+    public void AddItem(string ItemName, int amount = 1)
     {
-        if (!Items.ItemExists(itemName))
+        if (!Items.ItemExists(ItemName))
         {
             return;
         }
 
-        if (!ItemInv.ContainsKey(itemName))
+        if (!ItemInv.ContainsKey(ItemName))
         {
-            ItemInv.Add(itemName, amount);
-            Items.ItemID[itemName].AddItemScripts(this.gameObject);
-            Dirty(itemName);
+            ItemInv.Add(ItemName, amount);
+            Items.ItemID[ItemName].AddItemScripts(this.gameObject);
+            Dirty(ItemName);
         }
         else
         {
-            ItemInv[itemName] += amount;
-            Dirty(itemName);
+            ItemInv[ItemName] += amount;
+            Dirty(ItemName);
         }
     }
 

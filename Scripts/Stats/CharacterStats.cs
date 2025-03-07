@@ -16,7 +16,7 @@ public class CharacterStats : MonoBehaviour
 
     void Awake()
     {
-        _characterBaseStats = Instantiate(_characterBaseStatSet).GetDictionary(); //todo: save new stat types instead of references so the SO isnt being modified (float instead of stat value?)
+        _characterBaseStats = Instantiate(_characterBaseStatSet).GetDictionary();
 
         UpdateStats();
     }
@@ -25,7 +25,7 @@ public class CharacterStats : MonoBehaviour
     {
         if (_dirty)
             UpdateStats();
-        Debug.Log("aaaa");
+        Debug.Log(_characterStats[type].Value);
         return _characterStats[type].Value;
     }
 
@@ -34,7 +34,7 @@ public class CharacterStats : MonoBehaviour
         _characterStats.Clear();
         foreach (KeyValuePair<StatType, Stat> stat in _characterBaseStats)
         {
-            _characterStats.Add(stat.Key, new Stat(stat.Value.Type, stat.Value.Value)); //UNTESTED TODO: TEST IT!!!!!!!!!!
+            _characterStats.Add(stat.Key, new Stat(stat.Value.Type, stat.Value.Value));
         }
         List<StatMod> modifiersToApply = new (_baseStatModifiers);
 
@@ -59,6 +59,8 @@ public class CharacterStats : MonoBehaviour
     {
         if (_baseStatModifiers.Contains(mod))
         {
+            _baseStatModifiers.Find(match => match.Equals(mod)).Value = mod.Value;
+            _dirty = true;
             return;
         }
         _baseStatModifiers.Add(mod);

@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_jumping)
         {
-            rb.AddForce(new Vector3(0, JumpHeight * jumpMultiplier, 0), ForceMode.Acceleration);
+            rb.AddForce(new Vector3(rb.linearVelocity.x, JumpHeight * jumpMultiplier, rb.linearVelocity.z), ForceMode.VelocityChange);
             _jumping = false;
         }
     }

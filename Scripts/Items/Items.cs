@@ -24,28 +24,28 @@ public class Items
     public static Dictionary<string, BaseItem> ItemID = new Dictionary<string, BaseItem>(); //Add from resource get type when build for now
     public interface IItem
     {
-        public string itemName { get; }
+        public string ItemName { get; }
         public ItemRarity Rarity { get; }
         public ItemType Type { get; }
         public int Count { get; }
     }
 
-    public static bool ItemExists(string itemName)
+    public static bool ItemExists(string ItemName)
     {
-        if (!ItemID.ContainsKey(itemName))
+        if (!ItemID.ContainsKey(ItemName))
         {
-            Debug.LogError($"Item named {itemName} does not exist!");
+            Debug.LogError($"Item named {ItemName} does not exist!");
             return false;
         }
         return true;
     }
 
-    public static BaseItem GetItemSO(string itemName)
+    public static BaseItem GetItemSO(string ItemName)
     {
-        if (!ItemID.ContainsKey(itemName))
+        if (!ItemID.ContainsKey(ItemName))
         {
             return null;
         }
-        return ItemID[itemName];
+        return ItemID[ItemName];
     }
 }

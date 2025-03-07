@@ -8,10 +8,10 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
     protected ItemInventory InvOwner;
     protected CharacterStats characterStats;
 
-    public string itemName => BaseItemSO.itemName;
+    public string ItemName => BaseItemSO.ItemName;
     public Items.ItemRarity Rarity => BaseItemSO.Rarity;
     public Items.ItemType Type => BaseItemSO.Type;
-    public int Count => InvOwner.ItemInv[itemName];
+    public int Count => InvOwner.ItemInv[ItemName];
 
     private void Awake()
     {
@@ -24,6 +24,12 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
         controller = InvOwner.GetComponent<PlayerController>();
         characterStats = InvOwner.GetComponent<CharacterStats>();
         InvOwner.Holder.ItemObjects.Add(gameObject);
+        ItemAwake();
+    }
+
+    protected virtual void ItemAwake()
+    {
+        
     }
 
     private void Update()
@@ -33,19 +39,25 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
 
     public virtual void UpdateStats()
     {
-        if (!InvOwner.DirtyItems.Contains<string>(itemName))
+        if (!InvOwner.DirtyItems.Contains<string>(ItemName))
         {
             return;
         }
-        InvOwner.Undirty(itemName);
+        InvOwner.Undirty(ItemName);
     }
 
     private void OnDestroy()
     {
         if (InvOwner != null)
         {
-            InvOwner.ItemInv.Remove(itemName);
+            InvOwner.ItemInv.Remove(ItemName);
+            InvOwner.Holder.ItemObjects.Remove(gameObject);
         }
-        InvOwner.Holder.ItemObjects.Remove(gameObject);
+        ItemOnDestroy();
+    }
+
+    protected virtual void ItemOnDestroy()
+    {
+
     }
 }
