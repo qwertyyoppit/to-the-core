@@ -4,34 +4,28 @@ using UnityEngine;
 public class PingasItemScript : BaseItemScript
 {
     [Header("Passive Jump Modifier")]
-    public float InitialValue = 0.2f;
-    public float ItemValueRate = 0.15f;
-    public StatModifier Mod = StatModifier.Add;
-    private float TotalValue => InitialValue + ItemValueRate * Count;
+    [SerializeField] ItemEffectStat JumpEffect;
+    private float TotalValue => JumpEffect.InitialValue + JumpEffect.StackedValue * Count;
 
     StatMod JumpModifier;
 
     protected override void ItemAwake()
     {
-        JumpModifier = new StatMod(StatType.JumpHeight, TotalValue, Mod); 
+        JumpModifier = new StatMod(StatType.JumpHeight, TotalValue, JumpEffect.ModType); 
     }
 
-    public override void UpdateStats()
+    protected override void ItemUpdateStats()
     {
-        base.UpdateStats();
         JumpModifier.Value = TotalValue;
 
         if (Count > 1)
         {
-            characterStats.AddStatModifier(JumpModifier);
+            _activeModsList.Add(JumpModifier);
         }
     }
 
     protected override void ItemOnDestroy()
     {
-        if (Count == 0)
-        {
-            characterStats.RemoveStatModifier(JumpModifier);
-        }
+        base.ItemOnDestroy();
     }
 }

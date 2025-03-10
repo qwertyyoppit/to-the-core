@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ef69fbe42e5cda48a1302b74505babd, type: 3}
   m_Name: PingasItem
   m_EditorClassIdentifier: 
-  itemName: Pingas
+  ItemName: Pingas
   Rarity: 4
   Type: 0
   ItemPrefab: {fileID: 4631834890823188166, guid: 914aa3ca59138914c9091c1aa8c0bfb0, type: 3}

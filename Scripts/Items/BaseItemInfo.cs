@@ -3,8 +3,8 @@ using UnityEditor;
 using UnityEngine;
 using static Items;
 
-[CreateAssetMenu(menuName ="BaseItem")]
-public class BaseItem : ScriptableObject
+[CreateAssetMenu(menuName ="BaseItemInfo")]
+public class BaseItemInfo : ScriptableObject
 {
     [Header("Item Information")]
     public string ItemName;

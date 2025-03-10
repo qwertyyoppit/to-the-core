@@ -21,7 +21,7 @@ public class Items
         Special,
     }
 
-    public static Dictionary<string, BaseItem> ItemID = new Dictionary<string, BaseItem>(); //Add from resource get type when build for now
+    public static Dictionary<string, BaseItemInfo> ItemID = new Dictionary<string, BaseItemInfo>(); //Add from resource get type when build for now
     public interface IItem
     {
         public string ItemName { get; }
@@ -40,7 +40,7 @@ public class Items
         return true;
     }
 
-    public static BaseItem GetItemSO(string ItemName)
+    public static BaseItemInfo GetItemSO(string ItemName)
     {
         if (!ItemID.ContainsKey(ItemName))
         {

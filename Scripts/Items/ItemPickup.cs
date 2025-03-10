@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 public class ItemPickup : MonoBehaviour
 {
-    public BaseItem Item;
+    public BaseItemInfo Item;
 
     public int Amount = 1;
 

@@ -7,7 +7,7 @@ public enum StatType
     MaxHitPoints,
     Damage,
 }
-public enum StatModifier
+public enum StatModType
 {
     Add,
     Multiply

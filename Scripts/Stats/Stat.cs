@@ -17,9 +17,9 @@ public class Stat
 [System.Serializable]
 public class StatMod : Stat
 {
-    public StatModifier Modifier;
+    public StatModType Modifier;
 
-    public StatMod(StatType type, float value, StatModifier mod) : base(type, value)
+    public StatMod(StatType type, float value, StatModType mod) : base(type, value)
     {
         Modifier = mod;
     }
