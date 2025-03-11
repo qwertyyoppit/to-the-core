@@ -19,7 +19,9 @@ public class BaseItemInfo : ScriptableObject
         Items.ItemID.Add(ItemName, this);
     }
 
-    public void AddItemScripts(GameObject target)
+    public BaseItemScript AddItemScripts(GameObject target) /*TODO: Move to Items to have an ItemName parameter. would be beter i tink
+    Actually maybe you should just merge this with an AddItem() thingamabob following the ItemInv-ItemHolder merge
+    And make a better return item script thing. please! and thank! you :index_finger_pointing_at_viewer:*/
     {
         if (!target.TryGetComponent<ItemInventory>(out ItemInventory Inv))
         {
@@ -33,7 +35,8 @@ public class BaseItemInfo : ScriptableObject
             Holder = Inv.CreateItemHolder().GetComponent<ItemHolder>();
         }
 
-        Instantiate(ItemPrefab, Holder.transform);
+        BaseItemScript script = Instantiate(ItemPrefab, Holder.transform).GetComponent<BaseItemScript>();
+        return script;
     }
 
     public void RemoveItemScripts(GameObject target)

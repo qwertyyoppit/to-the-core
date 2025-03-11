@@ -6,15 +6,18 @@ using UnityEngine;
 public class ItemInventory : MonoBehaviour
 {
     public Dictionary<string, int> ItemInv = new Dictionary<string, int>();
-    public List<string> DirtyItems = new List<string>();
+    private Dictionary<string, BaseItemScript> _itemObjects = new Dictionary<string, BaseItemScript>();
+    private List<string> DirtyItems = new List<string>();
     public Action<ItemInventory> OnListDirtied;
 
     public Action ItemInvDestroyed;
 
     public ItemHolder Holder;
+    private GameObject ItemHolder;
 
     void Awake()
     {
+        ItemHolder = Instantiate(new GameObject(), gameObject.transform);
         CreateItemHolder();
     }
 
@@ -48,7 +51,8 @@ public class ItemInventory : MonoBehaviour
         if (!ItemInv.ContainsKey(ItemName))
         {
             ItemInv.Add(ItemName, amount);
-            Items.ItemID[ItemName].AddItemScripts(gameObject);
+            BaseItemScript newscript = Items.ItemID[ItemName].AddItemScripts(gameObject);
+            //newscript.setcount(amount);
             Dirty(ItemName);
         }
         else

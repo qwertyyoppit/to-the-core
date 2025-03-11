@@ -12,7 +12,7 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
     public string ItemName => ItemInfo.ItemName;
     public Items.ItemRarity Rarity => ItemInfo.Rarity;
     public Items.ItemType Type => ItemInfo.Type;
-    public int Count => InvOwner.ItemInv[ItemName];
+    [SerializeField] private int Count = 0;
 
     protected List<StatMod> _activeModsList = new();
 
