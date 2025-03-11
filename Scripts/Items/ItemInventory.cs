@@ -9,13 +9,13 @@ public class ItemInventory : MonoBehaviour
     public List<string> DirtyItems = new List<string>();
     public Action<ItemInventory> OnListDirtied;
 
-    public Action<ItemInventory> ItemInvDestroyed;
+    public Action ItemInvDestroyed;
 
     public ItemHolder Holder;
 
     void Awake()
     {
-        
+        CreateItemHolder();
     }
 
     void Update()
@@ -28,8 +28,7 @@ public class ItemInventory : MonoBehaviour
 
     void OnDestroy()
     {
-        if (this)
-            ItemInvDestroyed.Invoke(this);
+        ItemInvDestroyed.Invoke();
     }
 
     public GameObject CreateItemHolder()
@@ -49,7 +48,7 @@ public class ItemInventory : MonoBehaviour
         if (!ItemInv.ContainsKey(ItemName))
         {
             ItemInv.Add(ItemName, amount);
-            Items.ItemID[ItemName].AddItemScripts(this.gameObject);
+            Items.ItemID[ItemName].AddItemScripts(gameObject);
             Dirty(ItemName);
         }
         else
@@ -100,5 +99,14 @@ public class ItemInventory : MonoBehaviour
         }
 
         DirtyItems.Remove(ItemName);
+    }
+
+    public void GetStatModifiersFromItems()
+    {
+        List<StatMod> mods = new List<StatMod>();
+        foreach (string ItemName in ItemInv.Keys)
+        {
+            
+        }
     }
 }

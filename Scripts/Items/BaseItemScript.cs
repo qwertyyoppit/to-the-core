@@ -19,7 +19,7 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
     private void Awake()
     {
         InvOwner = gameObject.GetComponentInParent<ItemInventory>();
-        if (!InvOwner)
+        if (InvOwner is null)
         {
             Destroy(gameObject);
             return;
@@ -48,7 +48,7 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
             return;
         }
         ItemUpdateStats();
-        characterStats.AddStatModifierMethod(GetActiveStatModifiers());
+
         InvOwner.Undirty(ItemName);
     }
 
@@ -62,7 +62,6 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
         if (InvOwner != null)
         {
             InvOwner.ItemInv.Remove(ItemName);
-            InvOwner.Holder.ItemObjects.Remove(gameObject);
         }
         ItemOnDestroy();
     }

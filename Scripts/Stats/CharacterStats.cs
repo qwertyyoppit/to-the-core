@@ -8,8 +8,6 @@ public class CharacterStats : MonoBehaviour
 
     private Dictionary<StatType, Stat> _characterBaseStats;
 
-    private List<StatMod[]> _getStatModMethods = new();
-
     private readonly List<StatMod> _baseStatModifiers = new List<StatMod>();
 
     private Dictionary<StatType, Stat> _characterStats = new Dictionary<StatType, Stat>();
@@ -33,17 +31,7 @@ public class CharacterStats : MonoBehaviour
 
     private void UpdateStats()
     {
-        _baseStatModifiers.Clear();
-        foreach (StatMod[] mod in _getStatModMethods)
-        {
-            if (mod == null)
-            {
-                _getStatModMethods.Remove(mod);
-                continue;
-            }
-
-            _baseStatModifiers.AddRange(mod);
-        }
+        GetStatModifiers();
         _characterStats.Clear();
         foreach (KeyValuePair<StatType, Stat> stat in _characterBaseStats)
         {
@@ -68,14 +56,10 @@ public class CharacterStats : MonoBehaviour
         _dirty = false;
     }
 
-    public void AddStatModifierMethod(StatMod[] mod)
+    private void GetStatModifiers()
     {
-        if (mod == null)
-        {
-            return;
-        }
+        _baseStatModifiers.Clear();
 
-        _getStatModMethods.Add(mod);
     }
 
     public void AddStatModifier(StatMod mod)

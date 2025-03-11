@@ -10,7 +10,7 @@ public class ItemHolder : MonoBehaviour
     private void Awake()
     {
         InvOwner = GetComponentInParent<ItemInventory>();
-        if (!InvOwner)
+        if (InvOwner == null)
         {
             Destroy(gameObject);
         }
@@ -21,7 +21,7 @@ public class ItemHolder : MonoBehaviour
 
     private void OnInvDirtied(ItemInventory Inv)
     {
-        if (!InvOwner)
+        if (InvOwner == null)
         {
             Destroy(this);
             return;
@@ -32,7 +32,7 @@ public class ItemHolder : MonoBehaviour
         }
         foreach (GameObject ItemObj in ItemObjects)
         {
-            if (!ItemObj)
+            if (ItemObj == null)
             {
                 ItemObjects.Remove(ItemObj);
             }
@@ -43,9 +43,9 @@ public class ItemHolder : MonoBehaviour
         }
     }
 
-    private void OnItemInvDestroyed(ItemInventory Inv)
+    private void OnItemInvDestroyed()
     {
-        if (Inv == InvOwner)
+        if (InvOwner == null)
         {
             Destroy(gameObject);
         }
@@ -53,11 +53,9 @@ public class ItemHolder : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (InvOwner != null)
+        if (InvOwner == null)
         {
             InvOwner.Holder = null;
         }
-        InvOwner.ItemInvDestroyed -= OnItemInvDestroyed;
-        InvOwner.OnListDirtied -= OnInvDirtied;
     }
 }
