@@ -45,65 +45,42 @@ public class ItemInventory : MonoBehaviour
             }
             _itemObjects.Add(itemScript.ItemName, itemScript);
             itemScript.Count = amount;
-            Dirty(itemName);
         }
         else
         {
             _itemObjects[itemName].Count = amount;
-            Dirty(itemName);
         }
     }
 
-    public void RemoveItem(string ItemName, int amount = 1)
+    public void RemoveItem(string itemName, int amount = 1)
     {
-        if (!Items.ItemExists(ItemName))
+        if (!Items.ItemExists(itemName))
         {
             return;
         }
-        if (!_itemObjects.ContainsKey(ItemName))
+        if (!_itemObjects.ContainsKey(itemName))
         {
             return;
         }
 
-        if (_itemObjects[ItemName].Count - amount <= 0)
+        if (_itemObjects[itemName].Count - amount <= 0)
         {
-            _itemObjects.Remove(ItemName);
-            Items.ItemID[ItemName].RemoveItemScripts(gameObject);
+            _itemObjects.Remove(itemName);
+            Items.ItemID[itemName].RemoveItemScripts(gameObject); //DEPRECATED, FIGURE OUT NEW REMOVE ITEM THING!!!!
         }
         else
         {
-            _itemObjects[ItemName].Count -= amount;
-            Dirty(ItemName);
+            _itemObjects[itemName].Count -= amount;
         }
     }
 
-    public void Dirty(string ItemName)
-    {
-        if (_dirtyItems.Contains<string>(ItemName))
-        {
-            return;
-        }
-
-        _dirtyItems.Add(ItemName);
-        OnListDirtied.Invoke(this);
-    }
-
-    public void Undirty(string ItemName)
-    {
-        if (!_dirtyItems.Contains<string>(ItemName))
-        {
-            return;
-        }
-
-        _dirtyItems.Remove(ItemName);
-    }
-
-    public void GetStatModifiersFromItems()
+    public List<StatMod> GetStatModifiersFromItems()
     {
         List<StatMod> mods = new List<StatMod>();
-        foreach (string itemName in _itemObjects.Keys)
+        foreach (BaseItemScript itemScript in _itemObjects.Values)
         {
-            
+            mods.AddRange(itemScript.GetActiveStatModifiers());
         }
+        return mods;
     }
 }

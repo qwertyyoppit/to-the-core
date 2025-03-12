@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class PingasItemScript : BaseItemScript
 {
-    [Header("Passive Jump Modifier")]
     [SerializeField] ItemEffectStat JumpEffect;
     private float TotalValue => JumpEffect.InitialValue + JumpEffect.StackedValue * _count;
 

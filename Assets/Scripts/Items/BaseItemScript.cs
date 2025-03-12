@@ -5,9 +5,8 @@ using UnityEngine;
 public abstract class BaseItemScript : MonoBehaviour, Items.IItem
 {
     public BaseItemInfo ItemInfo;
-    protected PlayerController controller;
     protected ItemInventory InvOwner;
-    protected CharacterStats characterStats;
+    protected CharacterStats charStats;
 
     public string ItemName => ItemInfo.ItemName;
     public Items.ItemRarity Rarity => ItemInfo.Rarity;
@@ -23,15 +22,6 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
 
     private void Awake()
     {
-        InvOwner = gameObject.GetComponentInParent<ItemInventory>();
-        if (InvOwner is null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        controller = InvOwner.GetComponent<PlayerController>();
-        characterStats = InvOwner.GetComponent<CharacterStats>();
-        
         ItemAwake();
     }
 
@@ -40,9 +30,31 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
 
     }
 
+    private void Start()
+    {
+        InvOwner = gameObject.GetComponentInParent<ItemInventory>();
+        if (InvOwner is null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        charStats = InvOwner.GetComponent<CharacterStats>();
+        if (charStats is null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        ItemStart();
+    }
+
+    protected virtual void ItemStart()
+    {
+
+    }
+
     private void Update()
     {
-        if (Count != _count)
+        if (Count != _count) //Dirty this if count changed/different than before
         {
             _count = Count;
             _dirty = true;
@@ -76,12 +88,12 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
         ItemOnDestroy();
     }
 
-    protected virtual void ItemOnDestroy()
+    protected virtual void ItemOnDestroy() //Change to OnDisable() for unsubscribing if called upon destruction as well 
     {
 
     }
 
-    protected virtual StatMod[] GetActiveStatModifiers()
+    public StatMod[] GetActiveStatModifiers()
     {
         if (_dirty)
         {
