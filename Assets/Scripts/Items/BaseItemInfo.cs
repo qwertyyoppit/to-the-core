@@ -26,20 +26,20 @@ public class BaseItemInfo : ScriptableObject
             return;
         }
 
-        ItemHolder Holder = Inv.Holder;
+        
 
-        if (!Holder)
-        {
-            return;
-        }
+        //if (!Holder)
+        //{
+        //    return;
+        //}
 
-        foreach(GameObject ItemScript in Holder.ItemObjects)
-        {
-            if (ItemScript.GetComponent<IItem>().ItemName == ItemName)
-            {
-                Destroy(ItemScript);
-                return;
-            }
-        }
+        //foreach(GameObject ItemScript in Holder.ItemObjects)
+        //{
+        //    if (ItemScript.GetComponent<IItem>().ItemName == ItemName)
+        //    {
+        //        Destroy(ItemScript);
+        //        return;
+        //    }
+        //}
     }
 }

@@ -42,8 +42,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 13
-  m_BakeOnSceneLoad: 0
+  serializedVersion: 12
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -400,7 +399,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be4dcdf39f88ae846a4cd8fd481a0572, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Holder: {fileID: 0}
 --- !u!114 &274340285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -977,7 +975,6 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
-  m_ScrollDeltaPerTick: 6
 --- !u!114 &484949162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1124,6 +1121,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4373304345602386160, guid: 50aef6172ef865244922272f18568e89, type: 3}
+      propertyPath: ItemInfo
+      value: 
+      objectReference: {fileID: 11400000, guid: 2d74cb68f7f79ee4285d1e39f73a49b6, type: 2}
     - target: {fileID: 4400421592384066674, guid: 50aef6172ef865244922272f18568e89, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

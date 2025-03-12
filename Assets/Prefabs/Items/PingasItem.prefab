@@ -44,6 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3063e875462a5d94d8e3cd985835b398, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BaseItemSO: {fileID: 11400000, guid: 2d74cb68f7f79ee4285d1e39f73a49b6, type: 2}
-  InitialValue: 0.5
-  ItemValueRate: 0.15
+  ItemInfo: {fileID: 11400000, guid: 2d74cb68f7f79ee4285d1e39f73a49b6, type: 2}
+  _dirty: 1
+  JumpEffect:
+    Type: 0
+    InitialValue: 0
+    StackedValue: 0
+    IncludeStackedInInitial: 0
+    ModType: 0

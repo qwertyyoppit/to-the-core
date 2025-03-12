@@ -11,7 +11,6 @@ public class ItemInventory : MonoBehaviour
 
     public Action ItemInvDestroyed;
 
-    public ItemHolder Holder;
     private GameObject ItemHolder;
 
     void Awake()
