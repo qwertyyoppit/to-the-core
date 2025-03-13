@@ -8,7 +8,7 @@ public class CharacterStats : MonoBehaviour
 
     private Dictionary<StatType, Stat> _characterBaseStats;
 
-    private readonly List<StatMod> _baseStatModifiers = new List<StatMod>();
+    private readonly List<StatMod> _statModifiers = new List<StatMod>();
 
     private Dictionary<StatType, Stat> _characterStats = new Dictionary<StatType, Stat>();
 
@@ -34,7 +34,7 @@ public class CharacterStats : MonoBehaviour
     private void UpdateStat(StatType type)
     {
         List<StatMod> typeMod = new();
-        foreach (StatMod mod in _baseStatModifiers)
+        foreach (StatMod mod in _statModifiers)
         {
             if (mod.Type == type)
             {
@@ -67,7 +67,7 @@ public class CharacterStats : MonoBehaviour
         {
             _characterStats.Add(stat.Key, new Stat(stat.Value.Type, stat.Value.Value));
         }
-        List<StatMod> modifiersToApply = new (_baseStatModifiers);
+        List<StatMod> modifiersToApply = new (_statModifiers);
 
         foreach (StatMod mod in modifiersToApply)
         {
@@ -88,29 +88,29 @@ public class CharacterStats : MonoBehaviour
 
     private void GetStatModifiers()
     {
-        _baseStatModifiers.Clear();
+        _statModifiers.Clear();
 
     }
 
     public void AddStatModifier(StatMod mod)
     {
-        if (_baseStatModifiers.Contains(mod))
+        if (_statModifiers.Contains(mod))
         {
-            _baseStatModifiers.Find(match => match.Equals(mod)).Value = mod.Value;
+            _statModifiers.Find(match => match.Equals(mod)).Value = mod.Value;
             _dirty = true;
             return;
         }
-        _baseStatModifiers.Add(mod);
+        _statModifiers.Add(mod);
         _dirty = true;
     }
 
     public void RemoveStatModifier(StatMod mod)
     {
-        if (!_baseStatModifiers.Contains(mod))
+        if (!_statModifiers.Contains(mod))
         {
             return;
         }
-        _baseStatModifiers.Remove(mod);
+        _statModifiers.Remove(mod);
         _dirty = true;
     }
 }

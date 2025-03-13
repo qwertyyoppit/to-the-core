@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3573321034360575222}
   m_Layer: 0
   m_Name: PingasItem
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45,13 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ItemInfo: {fileID: 11400000, guid: 2d74cb68f7f79ee4285d1e39f73a49b6, type: 2}
+  Count: 0
+  _dirty: 1
   JumpEffect:
     Type: 0
     InitialValue: 2
     StackedValue: 1.5
     IncludeStackedInInitial: 1
     ModType: 0
-  JumpModifier:
-    Type: 0
-    Value: 0
-    Modifier: 0

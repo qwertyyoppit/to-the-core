@@ -43,7 +43,7 @@ public class Items
 
     public static void RemoveItemObject(string itemName, GameObject target)
     {
-
+        
     }
 
     public static bool ItemExists(string itemName)
@@ -54,14 +54,5 @@ public class Items
             return false;
         }
         return true;
-    }
-
-    public static BaseItemInfo GetItemSO(string itemName)
-    {
-        if (!ItemID.ContainsKey(itemName))
-        {
-            return null;
-        }
-        return ItemID[itemName];
     }
 }

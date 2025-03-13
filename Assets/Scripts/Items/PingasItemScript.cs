@@ -23,8 +23,8 @@ public class PingasItemScript : BaseItemScript
         }
     }
 
-    protected override void ItemOnDestroy()
+    protected override void ItemOnDisable()
     {
-        base.ItemOnDestroy();
+        
     }
 }

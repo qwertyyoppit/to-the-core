@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ItemInfo: {fileID: 11400000, guid: 2d74cb68f7f79ee4285d1e39f73a49b6, type: 2}
+  Count: 0
   _dirty: 1
   JumpEffect:
     Type: 0

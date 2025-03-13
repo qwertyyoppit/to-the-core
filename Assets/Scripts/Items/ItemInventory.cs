@@ -6,8 +6,18 @@ using UnityEngine;
 public class ItemInventory : MonoBehaviour
 {
     private Dictionary<string, BaseItemScript> _itemObjects = new Dictionary<string, BaseItemScript>();
-    private List<string> _dirtyItems = new List<string>();
+    private Dictionary<string, BaseItemScript> _disabledItems = new Dictionary<string, BaseItemScript>();
     public Action<ItemInventory> OnListDirtied;
+
+    public bool dirty { get
+        {
+            foreach (BaseItemScript script in _itemObjects.Values)
+            {
+                if (script.isdirty)
+                    return true;
+            }
+            return false;
+        } }
 
     public Action ItemInvDestroyed;
 
@@ -65,13 +75,26 @@ public class ItemInventory : MonoBehaviour
 
         if (_itemObjects[itemName].Count - amount <= 0)
         {
-            _itemObjects.Remove(itemName);
-            Items.ItemID[itemName].RemoveItemScripts(gameObject); //DEPRECATED, FIGURE OUT NEW REMOVE ITEM THING!!!!
+            DisableItem(itemName);
         }
         else
         {
             _itemObjects[itemName].Count -= amount;
         }
+    }
+
+    private void EnableItem(string itemName)
+    {
+        _itemObjects[itemName].gameObject.SetActive(true);
+        _itemObjects.Add(itemName, _disabledItems[itemName]);
+        _disabledItems.Remove(itemName);
+    }
+
+    private void DisableItem(string itemName)
+    {
+        _itemObjects[itemName].gameObject.SetActive(false);
+        _disabledItems.Add(itemName, _itemObjects[itemName]);
+        _itemObjects.Remove(itemName);
     }
 
     public List<StatMod> GetStatModifiersFromItems()

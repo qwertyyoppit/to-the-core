@@ -18,10 +18,13 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
 
     [SerializeField] protected bool _dirty = true;
 
+    public bool isdirty => _dirty;
+
     protected List<StatMod> _activeModsList = new();
 
     private void Awake()
     {
+        gameObject.name = ItemName;
         ItemAwake();
     }
 
@@ -73,6 +76,11 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
 
     public virtual void UpdateStats()
     {
+        if (Count <= 0)
+        {
+            Count = 0;
+            gameObject.SetActive(false);
+        }
         _activeModsList.Clear();
         ItemUpdateStats();
         _dirty = false;
@@ -83,12 +91,13 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
 
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        ItemOnDestroy();
+        _activeModsList = null;
+        ItemOnDisable();
     }
 
-    protected virtual void ItemOnDestroy() //Change to OnDisable() for unsubscribing if called upon destruction as well 
+    protected virtual void ItemOnDisable()
     {
 
     }

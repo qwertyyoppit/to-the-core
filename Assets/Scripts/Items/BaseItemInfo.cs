@@ -16,30 +16,6 @@ public class BaseItemInfo : ScriptableObject
 
     private void OnEnable()
     {
-        Items.ItemID.Add(ItemName, this);
-    }
-
-    public void RemoveItemScripts(GameObject target)
-    {
-        if (!target.TryGetComponent<ItemInventory>(out ItemInventory Inv))
-        {
-            return;
-        }
-
-        
-
-        //if (!Holder)
-        //{
-        //    return;
-        //}
-
-        //foreach(GameObject ItemScript in Holder.ItemObjects)
-        //{
-        //    if (ItemScript.GetComponent<IItem>().ItemName == ItemName)
-        //    {
-        //        Destroy(ItemScript);
-        //        return;
-        //    }
-        //}
+        ItemID.Add(ItemName, this);
     }
 }
