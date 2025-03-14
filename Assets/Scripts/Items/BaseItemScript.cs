@@ -18,9 +18,23 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
 
     [SerializeField] protected bool _dirty = true;
 
-    public bool isdirty => _dirty;
+    public bool isdirty { get
+        {
+            return _dirty;
+        }
+        protected set
+        {
+            if (value)
+                _dirty = true;
+                InvOwner.dirtyItems = true;
+            if (!value)
+                _dirty = false;
+        }
+    }
 
     protected List<StatMod> _activeModsList = new();
+
+    protected Dictionary<StatType, StatMod[]> _cachedModsOfType = new();
 
     private void Awake()
     {
@@ -35,14 +49,12 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
 
     private void Start()
     {
-        InvOwner = gameObject.GetComponentInParent<ItemInventory>();
-        if (InvOwner is null)
+        if (!transform.parent.TryGetComponent<ItemInventory>(out InvOwner))
         {
             Destroy(gameObject);
             return;
         }
-        charStats = InvOwner.GetComponent<CharacterStats>();
-        if (charStats is null)
+        if (!InvOwner.TryGetComponent<CharacterStats>(out charStats))
         {
             Destroy(gameObject);
             return;
@@ -60,9 +72,9 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
         if (Count != _count) //Dirty this if count changed/different than before
         {
             _count = Count;
-            _dirty = true;
+            isdirty = true;
         }
-        if (_dirty)
+        if (isdirty)
         {
             UpdateStats();
         }
@@ -76,14 +88,15 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
 
     public virtual void UpdateStats()
     {
+        _cachedModsOfType.Clear();
+        _activeModsList.Clear();
         if (Count <= 0)
         {
             Count = 0;
             gameObject.SetActive(false);
         }
-        _activeModsList.Clear();
         ItemUpdateStats();
-        _dirty = false;
+        isdirty = false;
     }
 
     protected virtual void ItemUpdateStats()
@@ -104,10 +117,25 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
 
     public StatMod[] GetActiveStatModifiers()
     {
-        if (_dirty)
+        if (isdirty)
         {
             UpdateStats();
         }
         return _activeModsList.ToArray();
+    }
+
+    public StatMod[] GetActiveStatModifiersOfType(StatType type)
+    {
+        if (isdirty)
+        {
+            UpdateStats();
+        }
+        List<StatMod> typeMods = new List<StatMod>();
+        foreach (StatMod mod in _activeModsList)
+        {
+            if (mod.Type == type)
+                typeMods.Add(mod);
+        }
+        return typeMods.ToArray();
     }
 }

@@ -9,19 +9,20 @@ public class ItemInventory : MonoBehaviour
     private Dictionary<string, BaseItemScript> _disabledItems = new Dictionary<string, BaseItemScript>();
     public Action<ItemInventory> OnListDirtied;
 
-    public bool dirty { get
-        {
-            foreach (BaseItemScript script in _itemObjects.Values)
-            {
-                if (script.isdirty)
-                    return true;
-            }
-            return false;
-        } }
-
     public Action ItemInvDestroyed;
 
     private GameObject ItemHolder;
+
+    private List<StatMod> _itemStatMods = new List<StatMod>();
+    private bool _dirtyItems;
+    public bool dirtyItems { get { return _dirtyItems; } set
+        {
+            if (value)
+                _itemStatMods.Clear();
+                _dirtyItems = true;
+            if (!value)
+                _dirtyItems = false;
+        } }
 
     void Awake()
     {
@@ -105,5 +106,21 @@ public class ItemInventory : MonoBehaviour
             mods.AddRange(itemScript.GetActiveStatModifiers());
         }
         return mods;
+    }
+
+    public List<StatMod> GetStatModifiersFromItemsOfType(StatType type)
+    {
+        if (dirtyItems)
+        {
+            foreach (BaseItemScript itemScript in _itemObjects.Values)
+            {
+                _itemStatMods.AddRange(itemScript.GetActiveStatModifiersOfType(type));
+            }
+        }
+        else
+        {
+            
+        }
+        return _itemStatMods;
     }
 }
