@@ -1,18 +1,19 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 public class CharacterStats : MonoBehaviour
 {
     [SerializeField] BaseStatSet _characterBaseStatSet;
+
+    private ItemInventory _itemInv;
 
     private Dictionary<StatType, Stat> _characterBaseStats;
 
     private readonly List<StatMod> _statModifiers = new List<StatMod>();
 
     private Dictionary<StatType, Stat> _characterStats = new Dictionary<StatType, Stat>();
-
-    private bool _dirty = true;
 
     private List<StatType> _dirtyStats = new List<StatType>();
 
@@ -21,6 +22,11 @@ public class CharacterStats : MonoBehaviour
         _characterBaseStats = Instantiate(_characterBaseStatSet).GetDictionary();
 
         UpdateStats();
+    }
+
+    private void Start()
+    {
+        _itemInv = GetComponent<ItemInventory>();
     }
 
     public float GetStat(StatType type)
@@ -34,13 +40,8 @@ public class CharacterStats : MonoBehaviour
     private void UpdateStat(StatType type)
     {
         List<StatMod> typeMod = new();
-        foreach (StatMod mod in _statModifiers)
-        {
-            if (mod.Type == type)
-            {
-                typeMod.Add(mod);
-            }
-        }
+        typeMod = GetStatModifiersOfType(type);
+
         _characterStats[type].Value = _characterBaseStats[type].Value;
         foreach (StatMod mod in typeMod)
         {
@@ -61,7 +62,7 @@ public class CharacterStats : MonoBehaviour
 
     private void UpdateStats()
     {
-        GetStatModifiers();
+        UpdateStatModifiers();
         _characterStats.Clear();
         foreach (KeyValuePair<StatType, Stat> stat in _characterBaseStats)
         {
@@ -83,13 +84,25 @@ public class CharacterStats : MonoBehaviour
                 _characterStats[mod.Type].Value *= mod.Value;
             }
         }
-        _dirty = false;
     }
 
-    private void GetStatModifiers()
+    private void UpdateStatModifiers()
     {
         _statModifiers.Clear();
+        _statModifiers.AddRange(_itemInv.GetStatModifiersFromItems());
+    }
 
+    private List<StatMod> GetStatModifiersOfType(StatType type)
+    {
+        List<StatMod> mods = new List<StatMod>();
+        foreach (StatMod mod in _statModifiers)
+        {
+            if (mod.Type == type)
+            {
+                mods.Add(mod);
+            }
+        }
+        return mods;
     }
 
     public void AddStatModifier(StatMod mod)
@@ -97,11 +110,9 @@ public class CharacterStats : MonoBehaviour
         if (_statModifiers.Contains(mod))
         {
             _statModifiers.Find(match => match.Equals(mod)).Value = mod.Value;
-            _dirty = true;
             return;
         }
         _statModifiers.Add(mod);
-        _dirty = true;
     }
 
     public void RemoveStatModifier(StatMod mod)
@@ -111,6 +122,5 @@ public class CharacterStats : MonoBehaviour
             return;
         }
         _statModifiers.Remove(mod);
-        _dirty = true;
     }
 }

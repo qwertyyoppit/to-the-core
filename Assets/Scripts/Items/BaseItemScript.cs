@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public abstract class BaseItemScript : MonoBehaviour, Items.IItem
+public abstract class BaseItemScript : MonoBehaviour, IItem
 {
     public BaseItemInfo ItemInfo;
     protected ItemInventory InvOwner;
@@ -26,7 +26,7 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
         {
             if (value)
                 _dirty = true;
-                InvOwner.dirtyItems = true;
+                InvOwner.HasDirty = true;
             if (!value)
                 _dirty = false;
         }
@@ -93,7 +93,7 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
         if (Count <= 0)
         {
             Count = 0;
-            gameObject.SetActive(false);
+            ItemRemove();
         }
         ItemUpdateStats();
         isdirty = false;
@@ -104,8 +104,14 @@ public abstract class BaseItemScript : MonoBehaviour, Items.IItem
 
     }
 
+    public virtual void ItemRemove()
+    {
+        InvOwner.DisableItem(ItemName);
+    }
+
     private void OnDisable()
     {
+        Count = 0;
         _activeModsList = null;
         ItemOnDisable();
     }

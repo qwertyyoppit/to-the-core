@@ -14,15 +14,14 @@ public class ItemInventory : MonoBehaviour
     private GameObject ItemHolder;
 
     private List<StatMod> _itemStatMods = new List<StatMod>();
-    private bool _dirtyItems;
-    public bool dirtyItems { get { return _dirtyItems; } set
+
+    private bool _hasDirty = true;
+    public bool HasDirty {  get { return _hasDirty; }
+        set
         {
-            if (value)
-                _itemStatMods.Clear();
-                _dirtyItems = true;
-            if (!value)
-                _dirtyItems = false;
-        } }
+            _hasDirty = value;
+        }
+    }
 
     void Awake()
     {
@@ -91,7 +90,7 @@ public class ItemInventory : MonoBehaviour
         _disabledItems.Remove(itemName);
     }
 
-    private void DisableItem(string itemName)
+    public void DisableItem(string itemName)
     {
         _itemObjects[itemName].gameObject.SetActive(false);
         _disabledItems.Add(itemName, _itemObjects[itemName]);
@@ -110,17 +109,12 @@ public class ItemInventory : MonoBehaviour
 
     public List<StatMod> GetStatModifiersFromItemsOfType(StatType type)
     {
-        if (dirtyItems)
+        List<StatMod> mods = new List<StatMod>();
+
+        foreach (BaseItemScript itemScript in _itemObjects.Values)
         {
-            foreach (BaseItemScript itemScript in _itemObjects.Values)
-            {
-                _itemStatMods.AddRange(itemScript.GetActiveStatModifiersOfType(type));
-            }
+            mods.AddRange(itemScript.GetActiveStatModifiersOfType(type));
         }
-        else
-        {
-            
-        }
-        return _itemStatMods;
+        return mods;
     }
 }
