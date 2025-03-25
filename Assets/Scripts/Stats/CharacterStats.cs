@@ -105,6 +105,19 @@ public class CharacterStats : MonoBehaviour
         return mods;
     }
 
+    private List<StatMod> GetStatModifiersFromInv(ItemInventory itemInv)
+    {
+        List<StatMod> mods = new List<StatMod>();
+        foreach (StatMod mod in _statModifiers)
+        {
+            if (mod.Type == type)
+            {
+                mods.Add(mod);
+            }
+        }
+        return mods;
+    }
+
     public void AddStatModifier(StatMod mod)
     {
         if (_statModifiers.Contains(mod))

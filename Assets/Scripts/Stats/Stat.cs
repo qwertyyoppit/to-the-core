@@ -24,3 +24,8 @@ public class StatMod : Stat
         Modifier = mod;
     }
 }
+
+public class StatModifier 
+{
+
+}
