@@ -5,7 +5,14 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "BaseStatSet")]
 public class BaseStatSet : ScriptableObject
 {
-    [SerializeField] private List<Stat> StatList;
+    public List<Stat> StatList;
+
+    public Dictionary<StatType, List<Stat>> listStats;
+
+    public Stat GetStat(StatType type)
+    {
+        return listStats[type];
+    }
 
     public Dictionary<StatType, Stat> GetDictionary()
     {

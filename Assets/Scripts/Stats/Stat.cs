@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,7 +26,24 @@ public class StatMod : Stat
     }
 }
 
-public class StatModifier 
+public class StatModifier : IDisposable
 {
+    public StatType Type { get; }
 
+    public bool MarkedForRemoval { get; private set; }
+    public void MarkForRemoval()
+    { MarkedForRemoval = true; }
+
+    public event Action<StatModifier> OnDispose = delegate { };
+
+    public StatModifier(StatType type, bool markedForRemoval = false)
+    {
+        Type = type;
+        MarkedForRemoval = markedForRemoval;
+    }
+
+    public void Dispose()
+    {
+        OnDispose.Invoke(this);
+    }
 }
