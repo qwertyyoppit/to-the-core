@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 
-public class CharacterStats : MonoBehaviour
+public class CharacterStats : MonoBehaviour //BLOW THIS ALL UP SOON!
 {
     [SerializeField] BaseStatSet _characterBaseStatSet;
 

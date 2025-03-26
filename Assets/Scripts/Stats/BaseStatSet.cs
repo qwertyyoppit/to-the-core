@@ -1,26 +1,36 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "BaseStatSet")]
 public class BaseStatSet : ScriptableObject
 {
-    public List<Stat> StatList;
+    [SerializeField] private List<Stat> _statList { get; private set
+    {
+        _statList = value;
+        _statSet = new Dictionary<StatType, Stat>();
+            foreach (Stat stat in _statList)
+            {
+                _statSet.Add(stat.Type, stat);
+            }
+    }};
 
-    public Dictionary<StatType, List<Stat>> listStats;
+    private Dictionary<StatType, Stat> _statSet;
 
     public Stat GetStat(StatType type)
     {
-        return listStats[type];
+        return GetStatSet()[type];
     }
 
-    public Dictionary<StatType, Stat> GetDictionary()
+    public Dictionary<StatType, Stat> GetStatSet()
     {
-        Dictionary<StatType, Stat> tempdict = new Dictionary<StatType, Stat>();
-        foreach (Stat stat in StatList)
+        if (_statSet == null) 
         {
-            tempdict.Add(stat.Type, stat);
+            _statSet = new Dictionary<StatType, Stat>();
+            foreach (Stat stat in _statList)
+            {
+                _statSet.Add(stat.Type, stat);
+            }
         }
-        return tempdict;
+        return _statSet;
     }
 }

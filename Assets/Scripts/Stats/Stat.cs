@@ -26,9 +26,11 @@ public class StatMod : Stat
     }
 }
 
+[System.Serializable]
 public class StatModifier : IDisposable
 {
     public StatType Type { get; }
+    public IOperationStrategy Strategy { get; }
 
     public bool MarkedForRemoval { get; private set; }
     public void MarkForRemoval()
@@ -36,9 +38,10 @@ public class StatModifier : IDisposable
 
     public event Action<StatModifier> OnDispose = delegate { };
 
-    public StatModifier(StatType type, bool markedForRemoval = false)
+    public StatModifier(StatType type, IOperationStrategy strategy, bool markedForRemoval = false)
     {
         Type = type;
+        Strategy = strategy;
         MarkedForRemoval = markedForRemoval;
     }
 
