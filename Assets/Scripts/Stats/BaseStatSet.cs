@@ -4,15 +4,17 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "BaseStatSet")]
 public class BaseStatSet : ScriptableObject
 {
-    [SerializeField] private List<Stat> _statList { get; private set
+    public List<Stat> StatList
     {
-        _statList = value;
+        get { return StatList; } private set
+    {
+        StatList = value;
         _statSet = new Dictionary<StatType, Stat>();
-            foreach (Stat stat in _statList)
+            foreach (Stat stat in StatList)
             {
                 _statSet.Add(stat.Type, stat);
             }
-    }};
+    }   }
 
     private Dictionary<StatType, Stat> _statSet;
 
@@ -26,7 +28,7 @@ public class BaseStatSet : ScriptableObject
         if (_statSet == null) 
         {
             _statSet = new Dictionary<StatType, Stat>();
-            foreach (Stat stat in _statList)
+            foreach (Stat stat in StatList)
             {
                 _statSet.Add(stat.Type, stat);
             }

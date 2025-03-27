@@ -7,7 +7,7 @@ public class Stats
 
     public float GetStat(StatType type)
     {
-        var q = new Query(type, baseStats.GetStat(type).Value)
+        var q = new Query(type, baseStats.GetStat(type).Value);
         mediator.PerformQuery(this, q);
         return q.Value;
     }

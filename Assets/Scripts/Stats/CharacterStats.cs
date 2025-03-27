@@ -19,7 +19,7 @@ public class CharacterStats : MonoBehaviour //BLOW THIS ALL UP SOON!
 
     void Awake()
     {
-        _characterBaseStats = Instantiate(_characterBaseStatSet).GetDictionary();
+        _characterBaseStats = Instantiate(_characterBaseStatSet).GetStatSet();
 
         UpdateStats();
     }
@@ -93,19 +93,6 @@ public class CharacterStats : MonoBehaviour //BLOW THIS ALL UP SOON!
     }
 
     private List<StatMod> GetStatModifiersOfType(StatType type)
-    {
-        List<StatMod> mods = new List<StatMod>();
-        foreach (StatMod mod in _statModifiers)
-        {
-            if (mod.Type == type)
-            {
-                mods.Add(mod);
-            }
-        }
-        return mods;
-    }
-
-    private List<StatMod> GetStatModifiersFromInv(ItemInventory itemInv)
     {
         List<StatMod> mods = new List<StatMod>();
         foreach (StatMod mod in _statModifiers)

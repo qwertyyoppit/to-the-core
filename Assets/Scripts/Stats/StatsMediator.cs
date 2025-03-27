@@ -1,13 +1,15 @@
-
+using System.Collections.Generic;
+using System.Linq;
 
 public class StatsMediator
 {
     readonly List<StatModifier> listModifiers = new();
     readonly Dictionary<StatType, IEnumerable<StatModifier>> modifiersCache = new();
+    readonly IStatModifierApplicationOrder order = new NormalStatModifierOrder();
 
     public void PerformQuery(object sender, Query query) {
         if (!modifiersCache.ContainsKey(query.Type)) {
-            modifiersCache[query.StatType] = listModifiers.Where(modifier => modifier.Type == query.StatType).ToList();
+            modifiersCache[query.Type] = listModifiers.Where(modifier => modifier.Type == query.Type).ToList();
         }
         query.Value = order.Apply(modifiersCache[query.Type], query.Value);
     }
@@ -19,7 +21,7 @@ public class StatsMediator
     public void AddModifier(StatModifier modifier) {
         listModifiers.Add(modifier);
         InvalidateCache(modifier.Type);
-        modifier.MarkedForRemoval = false;
+        modifier.MarkForRemoval();
         
         modifier.OnDispose += _ => InvalidateCache(modifier.Type);
         modifier.OnDispose += _ => listModifiers.Remove(modifier);
