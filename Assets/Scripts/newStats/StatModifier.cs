@@ -4,10 +4,17 @@ public class StatModifier
     public float Value;
     public IModifierOperation Operation;
 
-    public StatModifier(StatType type, float value, IModifierOperation operation)
+    public StatModifier(StatType type, float value, OperationOrder order)
     {
         Type = type;
         Value = value;
-        Operation = operation;
+        switch (order)
+        {
+            case OperationOrder.AddOperation:
+                Operation = new AddOperation(ref value); break;
+            case OperationOrder.MultiplyOperation:
+                Operation = new MultiplyOperation(ref value); break;
+        }
     }
+    public float Calculate(float value) => Operation.Calculate(value);
 }

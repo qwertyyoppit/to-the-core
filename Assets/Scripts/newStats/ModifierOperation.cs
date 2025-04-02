@@ -5,13 +5,27 @@ public enum OperationOrder
 }
 public interface IModifierOperation
 {
-    readonly OperationOrder;
-    readonly ref float _value;
     public float Calculate(float value);
 }
 
-public class AddOperation
+public class AddOperation : IModifierOperation
 {
-    OperationOrder = OperationOrder.AddOperation;
-    
+    readonly float _value;
+    public AddOperation(ref float value)
+    {
+        _value = value;
+    }
+
+    public float Calculate(float value) => value + _value;
+}
+
+public class MultiplyOperation : IModifierOperation
+{
+    readonly float _value;
+    public MultiplyOperation(ref float value)
+    {
+        _value = value;
+    }
+
+    public float Calculate(float value) => value * _value;
 }
