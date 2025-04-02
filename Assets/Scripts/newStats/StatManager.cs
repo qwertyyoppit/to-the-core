@@ -8,14 +8,16 @@ public class StatManager
     readonly Dictionary<StatType, IEnumerable<StatModifier>> modifiersCache = new();
     readonly IModifierApplicationOrder order = new ModifierApplicationOrder();
 
-    public float GetStat(StatType type)
+    public float GetStat(StatType type, float baseValue)
     {
         if (!modifiersCache.ContainsKey(type))
         {
             modifiersCache[type] = modifiers.Where(modifier => modifier.Type == type).ToList();
         }
-        return order.Apply(modifiersCache[type], baseStats.type // use a class with type and value for basestat or something
+        return order.Apply(modifiersCache[type], baseValue)
     }
+
+    public StatModifier AddModifier()
 
     public StatManager(ref BaseStats stats)
     {

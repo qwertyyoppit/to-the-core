@@ -6,35 +6,35 @@ public class Stats
     public float MoveAcceleration { 
         get
         {
-            return _baseStats.MoveAcceleration;
+            return _statManager.GetStat(StatType.MoveAcceleration, _baseStats.MoveAcceleration);
         }
     }
     public float MoveSpeed
     {
         get
         {
-            return _baseStats.MoveSpeed;
+            return _statManager.GetStat(StatType.MoveSpeed, _baseStats.MoveSpeed);
         }
     }
     public float MaxHealth
     {
         get
         {
-            return _baseStats.MaxHealth;
+            return _statManager.GetStat(StatType.MaxHealth, _baseStats.MaxHealth);
         }
     }
     public float Damage
     {
         get
         {
-            return _baseStats.Damage;
+            return _statManager.GetStat(StatType.Damage, _baseStats.Damage);
         }
     }
     public float Defense
     {
         get
         {
-            return _baseStats.Defense;
+            return _statManager.GetStat(StatType.Defense, _baseStats.Defense);
         }
     }
 
