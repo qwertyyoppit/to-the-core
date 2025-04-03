@@ -1,9 +1,11 @@
+using System;
+
 public class Stats
 {
     readonly BaseStats _baseStats;
     readonly StatManager _statManager;
 
-    public float MoveAcceleration { 
+    public float MoveAcceleration {
         get
         {
             return _statManager.GetStat(StatType.MoveAcceleration, _baseStats.MoveAcceleration);
@@ -41,6 +43,6 @@ public class Stats
     public Stats(BaseStats baseStats)
     {
         _baseStats = baseStats;
-        _statManager = new StatManager(ref baseStats);
+        _statManager = new StatManager();
     }
 }
