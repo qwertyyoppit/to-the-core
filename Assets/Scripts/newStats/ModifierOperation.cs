@@ -1,4 +1,4 @@
-public enum OperationOrder
+public enum OperationType
 {
     AddOperation,
     MultiplyOperation,

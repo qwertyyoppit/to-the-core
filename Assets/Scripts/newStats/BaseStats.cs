@@ -6,6 +6,8 @@ public class BaseStats : ScriptableObject
 
     public float MoveSpeed = 5f;
 
+    public float JumpHeight = 5f;
+
     public float MaxHealth = 100f;
 
     public float Damage = 5f;

@@ -1,24 +1,21 @@
-using NUnit.Framework.Internal;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    Vector3 movement;
+    private Vector3 movement;
 
-    CharacterStats charStat;
+    private Entity entity;
+    private Stats stats;
 
-    public float speed = 5f;
     [SerializeField] private float midairMoveMult = 0.1f;
     [SerializeField] private float maxSpeed = 7f;
     [SerializeField] private float rotateSpeed = 5f;
 
     private bool _jumping = false;
-    private float JumpHeight => charStat.GetStat(StatType.JumpHeight);
     public float jumpMultiplier = 1.0f;
 
-    Rigidbody rb;
-    CapsuleCollider capsule;
+    private Rigidbody rb;
+    private CapsuleCollider capsule;
 
     [SerializeField] private float groundCheckDistance = 0.005f;
 
@@ -28,7 +25,12 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         capsule = GetComponent<CapsuleCollider>();
-        charStat = GetComponent<CharacterStats>();
+        entity = GetComponent<Entity>();
+    }
+
+    private void Start()
+    {
+        stats = entity.Stats;
     }
 
     private void FixedUpdate()
@@ -36,12 +38,12 @@ public class PlayerController : MonoBehaviour
         if (movement != Vector3.zero)
         {
             Vector3 moveDir = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0) * movement; //Turn movement direction based on viewpoint direction
-            rb.MovePosition(rb.position + (speed * Time.fixedDeltaTime * new Vector3(moveDir.x, 0, moveDir.z)));
+            rb.MovePosition(rb.position + (stats.MoveAcceleration * Time.fixedDeltaTime * new Vector3(moveDir.x, 0, moveDir.z)));
             transform.forward = Vector3.Slerp(new(transform.forward.x, transform.forward.y, transform.forward.z), new(moveDir.x, transform.forward.y, moveDir.z), rotateSpeed * Time.fixedDeltaTime);
             if (!Grounded)
             {
                 return;
-                rb.MovePosition(rb.position + (speed * Time.fixedDeltaTime * moveDir * midairMoveMult));
+                rb.MovePosition(rb.position + (stats.MoveAcceleration * Time.fixedDeltaTime * moveDir * midairMoveMult));
                 transform.forward = Vector3.Slerp(new(transform.forward.x, transform.forward.y, transform.forward.z), new(moveDir.x, transform.forward.y, moveDir.z), rotateSpeed * Time.fixedDeltaTime * midairMoveMult);
             }
         }
@@ -66,7 +68,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_jumping)
         {
-            rb.AddForce(new Vector3(rb.linearVelocity.x, JumpHeight * jumpMultiplier, rb.linearVelocity.z), ForceMode.VelocityChange);
+            rb.AddForce(new Vector3(rb.linearVelocity.x, stats.JumpHeight * jumpMultiplier, rb.linearVelocity.z), ForceMode.VelocityChange);
             _jumping = false;
         }
     }

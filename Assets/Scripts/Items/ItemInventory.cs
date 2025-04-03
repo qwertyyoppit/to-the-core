@@ -13,8 +13,6 @@ public class ItemInventory : MonoBehaviour
 
     private GameObject ItemHolder;
 
-    private List<StatMod> _itemStatMods = new List<StatMod>();
-
     private bool _hasDirty = true;
     public bool HasDirty {  get { return _hasDirty; }
         set
@@ -95,26 +93,5 @@ public class ItemInventory : MonoBehaviour
         _itemObjects[itemName].gameObject.SetActive(false);
         _disabledItems.Add(itemName, _itemObjects[itemName]);
         _itemObjects.Remove(itemName);
-    }
-
-    public List<StatMod> GetStatModifiersFromItems()
-    {
-        List<StatMod> mods = new List<StatMod>();
-        foreach (BaseItemScript itemScript in _itemObjects.Values)
-        {
-            mods.AddRange(itemScript.GetActiveStatModifiers());
-        }
-        return mods;
-    }
-
-    public List<StatMod> GetStatModifiersFromItemsOfType(StatType type)
-    {
-        List<StatMod> mods = new List<StatMod>();
-
-        foreach (BaseItemScript itemScript in _itemObjects.Values)
-        {
-            mods.AddRange(itemScript.GetActiveStatModifiersOfType(type));
-        }
-        return mods;
     }
 }

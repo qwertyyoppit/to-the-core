@@ -2,47 +2,54 @@ using System;
 
 public class Stats
 {
-    readonly BaseStats _baseStats;
-    readonly StatManager _statManager;
+    readonly BaseStats baseStats;
+    readonly StatManager manager;
+
+    public Stats(BaseStats baseStats)
+    {
+        this.baseStats = baseStats;
+        manager = new StatManager();
+    }
 
     public float MoveAcceleration {
         get
         {
-            return _statManager.GetStat(StatType.MoveAcceleration, _baseStats.MoveAcceleration);
+            return manager.GetStat(StatType.MoveAcceleration, baseStats.MoveAcceleration);
         }
     }
     public float MoveSpeed
     {
         get
         {
-            return _statManager.GetStat(StatType.MoveSpeed, _baseStats.MoveSpeed);
+            return manager.GetStat(StatType.MoveSpeed, baseStats.MoveSpeed);
+        }
+    }
+    public float JumpHeight
+    {
+        get
+        {
+            return manager.GetStat(StatType.JumpHeight, baseStats.JumpHeight);
         }
     }
     public float MaxHealth
     {
         get
         {
-            return _statManager.GetStat(StatType.MaxHealth, _baseStats.MaxHealth);
+            return manager.GetStat(StatType.MaxHealth, baseStats.MaxHealth);
         }
     }
     public float Damage
     {
         get
         {
-            return _statManager.GetStat(StatType.Damage, _baseStats.Damage);
+            return manager.GetStat(StatType.Damage, baseStats.Damage);
         }
     }
     public float Defense
     {
         get
         {
-            return _statManager.GetStat(StatType.Defense, _baseStats.Defense);
+            return manager.GetStat(StatType.Defense, baseStats.Defense);
         }
-    }
-
-    public Stats(BaseStats baseStats)
-    {
-        _baseStats = baseStats;
-        _statManager = new StatManager();
     }
 }

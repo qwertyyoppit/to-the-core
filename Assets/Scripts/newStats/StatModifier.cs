@@ -14,15 +14,15 @@ public class StatModifier : IDisposable
 
     public Action<object> OnDispose = delegate { };
 
-    public StatModifier(StatType type, float value, OperationOrder order)
+    public StatModifier(StatType type, float value, OperationType operationType)
     {
         Type = type;
         Value = value;
-        switch (order)
+        switch (operationType)
         {
-            case OperationOrder.AddOperation:
+            case OperationType.AddOperation:
                 Operation = new AddOperation(ref value); break;
-            case OperationOrder.MultiplyOperation:
+            case OperationType.MultiplyOperation:
                 Operation = new MultiplyOperation(ref value); break;
         }
     }

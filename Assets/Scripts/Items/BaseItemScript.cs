@@ -1,12 +1,11 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public abstract class BaseItemScript : MonoBehaviour, IItem
 {
     public BaseItemInfo ItemInfo;
     protected ItemInventory InvOwner;
-    protected CharacterStats charStats;
+    protected Stats stats;
 
     public string ItemName => ItemInfo.ItemName;
     public Items.ItemRarity Rarity => ItemInfo.Rarity;
@@ -25,16 +24,18 @@ public abstract class BaseItemScript : MonoBehaviour, IItem
         protected set
         {
             if (value)
+            {
                 _dirty = true;
                 InvOwner.HasDirty = true;
+            }
             if (!value)
+            {
                 _dirty = false;
+            }
         }
     }
 
-    protected List<StatMod> _activeModsList = new();
-
-    protected Dictionary<StatType, StatMod[]> _cachedModsOfType = new();
+    protected List<StatModifier> _activeModsList = new();
 
     private void Awake()
     {
@@ -54,7 +55,7 @@ public abstract class BaseItemScript : MonoBehaviour, IItem
             Destroy(gameObject);
             return;
         }
-        if (!InvOwner.TryGetComponent<CharacterStats>(out charStats))
+        if (!InvOwner.TryGetComponent<Entity>(out _)) //Entity l9519159919548956374
         {
             Destroy(gameObject);
             return;
@@ -88,7 +89,6 @@ public abstract class BaseItemScript : MonoBehaviour, IItem
 
     public virtual void UpdateStats()
     {
-        _cachedModsOfType.Clear();
         _activeModsList.Clear();
         if (Count <= 0)
         {
@@ -119,29 +119,5 @@ public abstract class BaseItemScript : MonoBehaviour, IItem
     protected virtual void ItemOnDisable()
     {
 
-    }
-
-    public StatMod[] GetActiveStatModifiers()
-    {
-        if (isdirty)
-        {
-            UpdateStats();
-        }
-        return _activeModsList.ToArray();
-    }
-
-    public StatMod[] GetActiveStatModifiersOfType(StatType type)
-    {
-        if (isdirty)
-        {
-            UpdateStats();
-        }
-        List<StatMod> typeMods = new List<StatMod>();
-        foreach (StatMod mod in _activeModsList)
-        {
-            if (mod.Type == type)
-                typeMods.Add(mod);
-        }
-        return typeMods.ToArray();
     }
 }
