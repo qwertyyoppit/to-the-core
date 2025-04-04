@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
 
     private bool Grounded => Physics.SphereCast(transform.position, capsule.radius, Vector3.down, out _, capsule.height / 2 - capsule.radius + groundCheckDistance, (1<<3));
 
-    void Awake()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         capsule = GetComponent<CapsuleCollider>();
@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Update() 
+    private void Update()
     {
         if (!Pause.paused)
         {

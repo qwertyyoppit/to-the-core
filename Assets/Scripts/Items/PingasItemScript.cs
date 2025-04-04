@@ -3,28 +3,28 @@ using UnityEngine;
 
 public class PingasItemScript : BaseItemScript
 {
-    [SerializeField] ItemEffectStat JumpEffect;
-    private float TotalValue => JumpEffect.InitialValue + JumpEffect.StackedValue * _count;
+    [SerializeField] private ItemEffectStat JumpEffect;
+    private float TotalValue => JumpEffect.InitialValue + (JumpEffect.StackedValue * _count);
 
-    StatMod JumpModifier;
+    private StatModifier JumpModifier;
 
     protected override void ItemAwake()
     {
-        JumpModifier = new StatMod(StatType.JumpHeight, TotalValue, JumpEffect.ModType); 
+        JumpModifier = new StatModifier(StatType.JumpHeight, TotalValue, JumpEffect.ModType);
     }
 
-    protected override void ItemUpdateStats()
+    protected override void ItemHandleStats()
     {
         JumpModifier.Value = TotalValue;
+    }
 
-        if (_count > 1)
-        {
-            _activeModsList.Add(JumpModifier);
-        }
+    protected override void ItemOnEnable()
+    {
+        stats.Manager.AddModifier(JumpModifier);
     }
 
     protected override void ItemOnDisable()
     {
-        
+        JumpModifier.MarkForDisposal();
     }
 }

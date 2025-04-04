@@ -8,5 +8,5 @@ public class ItemEffectStat
     public float InitialValue;
     public float StackedValue;
     public bool IncludeStackedInInitial = false;
-    public StatModType ModType = StatModType.Add;
+    public OperationType ModType = 0;
 }

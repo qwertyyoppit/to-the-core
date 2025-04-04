@@ -7,6 +7,7 @@ using static Items;
 public class BaseItemInfo : ScriptableObject
 {
     [Header("Item Information")]
+    public ItemID ID;
     public string ItemName;
     public ItemRarity Rarity;
     public ItemType Type;
@@ -16,6 +17,6 @@ public class BaseItemInfo : ScriptableObject
 
     private void OnEnable()
     {
-        ItemID.Add(ItemName, this);
+        ItemList.Add(ID, this);
     }
 }

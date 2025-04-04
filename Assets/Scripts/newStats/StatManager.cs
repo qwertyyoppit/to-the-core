@@ -29,7 +29,7 @@ public class StatManager
         modifier.OnDispose += _ =>
         {
             InvalidateCache(modifier.Type);
-            modifiers.Remove(modifier);
+            _ = modifiers.Remove(modifier);
         };
     }
 }

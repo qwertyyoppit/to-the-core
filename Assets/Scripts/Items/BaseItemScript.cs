@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,10 +8,10 @@ public abstract class BaseItemScript : MonoBehaviour, IItem
     protected ItemInventory InvOwner;
     protected Stats stats;
 
+    public ItemID ID => ItemInfo.ID;
     public string ItemName => ItemInfo.ItemName;
     public Items.ItemRarity Rarity => ItemInfo.Rarity;
     public Items.ItemType Type => ItemInfo.Type;
-
 
     protected int _count = 0;
     public int Count = 0;
@@ -26,7 +27,6 @@ public abstract class BaseItemScript : MonoBehaviour, IItem
             if (value)
             {
                 _dirty = true;
-                InvOwner.HasDirty = true;
             }
             if (!value)
             {
@@ -43,10 +43,7 @@ public abstract class BaseItemScript : MonoBehaviour, IItem
         ItemAwake();
     }
 
-    protected virtual void ItemAwake()
-    {
-
-    }
+    protected virtual void ItemAwake() { }
 
     private void Start()
     {
@@ -63,10 +60,7 @@ public abstract class BaseItemScript : MonoBehaviour, IItem
         ItemStart();
     }
 
-    protected virtual void ItemStart()
-    {
-
-    }
+    protected virtual void ItemStart() { }
 
     private void Update()
     {
@@ -77,17 +71,14 @@ public abstract class BaseItemScript : MonoBehaviour, IItem
         }
         if (isdirty)
         {
-            UpdateStats();
+            HandleStats();
         }
         ItemUpdate();
     }
 
-    protected virtual void ItemUpdate()
-    {
+    protected virtual void ItemUpdate() { }
 
-    }
-
-    public virtual void UpdateStats()
+    public virtual void HandleStats()
     {
         _activeModsList.Clear();
         if (Count <= 0)
@@ -95,29 +86,35 @@ public abstract class BaseItemScript : MonoBehaviour, IItem
             Count = 0;
             ItemRemove();
         }
-        ItemUpdateStats();
+        else
+        {
+            ItemHandleStats();
+        }
         isdirty = false;
     }
 
-    protected virtual void ItemUpdateStats()
-    {
-
-    }
+    protected virtual void ItemHandleStats() { }
 
     public virtual void ItemRemove()
     {
-        InvOwner.DisableItem(ItemName);
+        InvOwner.DisableItem(ID);
     }
+
+    private void OnEnable()
+    {
+        Count = 0;
+        _activeModsList.Clear();
+        ItemOnEnable();
+    }
+
+    protected virtual void ItemOnEnable() { }
 
     private void OnDisable()
     {
         Count = 0;
-        _activeModsList = null;
+        _activeModsList.Clear();
         ItemOnDisable();
     }
 
-    protected virtual void ItemOnDisable()
-    {
-
-    }
+    protected virtual void ItemOnDisable() { }
 }

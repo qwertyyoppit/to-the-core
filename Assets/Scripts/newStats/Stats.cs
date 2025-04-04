@@ -2,8 +2,10 @@ using System;
 
 public class Stats
 {
-    readonly BaseStats baseStats;
-    readonly StatManager manager;
+    private readonly BaseStats baseStats;
+    private readonly StatManager manager;
+
+    public StatManager Manager => manager;
 
     public Stats(BaseStats baseStats)
     {

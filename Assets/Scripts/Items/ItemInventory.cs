@@ -5,21 +5,13 @@ using UnityEngine;
 
 public class ItemInventory : MonoBehaviour
 {
-    private Dictionary<string, BaseItemScript> _itemObjects = new Dictionary<string, BaseItemScript>();
-    private Dictionary<string, BaseItemScript> _disabledItems = new Dictionary<string, BaseItemScript>();
+    private Dictionary<ItemID, BaseItemScript> _itemObjects = new Dictionary<ItemID, BaseItemScript>();
+    private Dictionary<ItemID, BaseItemScript> _disabledItems = new Dictionary<ItemID, BaseItemScript>();
     public Action<ItemInventory> OnListDirtied;
 
     public Action ItemInvDestroyed;
 
     private GameObject ItemHolder;
-
-    private bool _hasDirty = true;
-    public bool HasDirty {  get { return _hasDirty; }
-        set
-        {
-            _hasDirty = value;
-        }
-    }
 
     void Awake()
     {
@@ -37,61 +29,61 @@ public class ItemInventory : MonoBehaviour
         ItemHolder.name = "Items";
     }
 
-    public void AddItem(string itemName, int amount = 1)
+    public void AddItem(ItemID id, int amount = 1)
     {
-        if (!Items.ItemExists(itemName))
+        if (!Items.ItemExists(id))
         {
             return;
         }
 
-        if (!_itemObjects.ContainsKey(itemName))
+        if (!_itemObjects.ContainsKey(id))
         {
-            BaseItemScript itemScript = Items.AddItemObject(itemName, ItemHolder);
+            BaseItemScript itemScript = Items.AddItemObject(id, ItemHolder);
             if (itemScript == null)
             {
                 return;
             }
-            _itemObjects.Add(itemScript.ItemName, itemScript);
+            _itemObjects.Add(itemScript.ID, itemScript);
             itemScript.Count = amount;
         }
         else
         {
-            _itemObjects[itemName].Count = amount;
+            _itemObjects[id].Count = amount;
         }
     }
 
-    public void RemoveItem(string itemName, int amount = 1)
+    public void RemoveItem(ItemID id, int amount = 1)
     {
-        if (!Items.ItemExists(itemName))
+        if (!Items.ItemExists(id))
         {
             return;
         }
-        if (!_itemObjects.ContainsKey(itemName))
+        if (!_itemObjects.ContainsKey(id))
         {
             return;
         }
 
-        if (_itemObjects[itemName].Count - amount <= 0)
+        if (_itemObjects[id].Count - amount <= 0)
         {
-            DisableItem(itemName);
+            DisableItem(id);
         }
         else
         {
-            _itemObjects[itemName].Count -= amount;
+            _itemObjects[id].Count -= amount;
         }
     }
 
-    private void EnableItem(string itemName)
+    private void EnableItem(ItemID id)
     {
-        _itemObjects[itemName].gameObject.SetActive(true);
-        _itemObjects.Add(itemName, _disabledItems[itemName]);
-        _disabledItems.Remove(itemName);
+        _itemObjects[id].gameObject.SetActive(true);
+        _itemObjects.Add(id, _disabledItems[id]);
+        _disabledItems.Remove(id);
     }
 
-    public void DisableItem(string itemName)
+    public void DisableItem(ItemID id)
     {
-        _itemObjects[itemName].gameObject.SetActive(false);
-        _disabledItems.Add(itemName, _itemObjects[itemName]);
-        _itemObjects.Remove(itemName);
+        _itemObjects[id].gameObject.SetActive(false);
+        _disabledItems.Add(id, _itemObjects[id]);
+        _itemObjects.Remove(id);
     }
 }

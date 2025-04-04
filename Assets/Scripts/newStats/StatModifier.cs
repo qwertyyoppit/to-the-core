@@ -7,10 +7,7 @@ public class StatModifier : IDisposable
     public IModifierOperation Operation;
 
     public bool MarkedForDisposal { get; private set; } = false;
-    public void MarkForDisposal()
-    {  
-        MarkedForDisposal = true;
-    }
+    public void MarkForDisposal() => MarkedForDisposal = true;
 
     public Action<object> OnDispose = delegate { };
 
