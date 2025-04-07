@@ -16,25 +16,6 @@ public abstract class BaseItemScript : MonoBehaviour, IItem
     protected int _count = 0;
     public int Count = 0;
 
-    [SerializeField] protected bool _dirty = true;
-
-    public bool isdirty { get
-        {
-            return _dirty;
-        }
-        protected set
-        {
-            if (value)
-            {
-                _dirty = true;
-            }
-            if (!value)
-            {
-                _dirty = false;
-            }
-        }
-    }
-
     protected List<StatModifier> _activeModsList = new();
 
     private void Awake()
@@ -43,40 +24,31 @@ public abstract class BaseItemScript : MonoBehaviour, IItem
         ItemAwake();
     }
 
-    protected virtual void ItemAwake() { }
-
     private void Start()
     {
-        if (!transform.parent.TryGetComponent<ItemInventory>(out InvOwner))
+        if (!transform.TryGetComponent(out InvOwner))
         {
             Destroy(gameObject);
             return;
         }
-        if (!InvOwner.TryGetComponent<Entity>(out _)) //Entity l9519159919548956374
+        if (!InvOwner.TryGetComponent<Entity>(out Entity entity)) //Entity l9519159919548956374
         {
             Destroy(gameObject);
             return;
         }
+        stats = entity.Stats;
         ItemStart();
     }
-
-    protected virtual void ItemStart() { }
 
     private void Update()
     {
         if (Count != _count) //Dirty this if count changed/different than before
         {
             _count = Count;
-            isdirty = true;
-        }
-        if (isdirty)
-        {
             HandleStats();
         }
         ItemUpdate();
     }
-
-    protected virtual void ItemUpdate() { }
 
     public virtual void HandleStats()
     {
@@ -90,10 +62,7 @@ public abstract class BaseItemScript : MonoBehaviour, IItem
         {
             ItemHandleStats();
         }
-        isdirty = false;
     }
-
-    protected virtual void ItemHandleStats() { }
 
     public virtual void ItemRemove()
     {
@@ -107,14 +76,22 @@ public abstract class BaseItemScript : MonoBehaviour, IItem
         ItemOnEnable();
     }
 
-    protected virtual void ItemOnEnable() { }
-
     private void OnDisable()
     {
         Count = 0;
         _activeModsList.Clear();
         ItemOnDisable();
     }
+
+    protected virtual void ItemAwake() { }
+
+    protected virtual void ItemStart() { }
+
+    protected virtual void ItemUpdate() { }
+
+    protected virtual void ItemHandleStats() { }
+
+    protected virtual void ItemOnEnable() { }
 
     protected virtual void ItemOnDisable() { }
 }

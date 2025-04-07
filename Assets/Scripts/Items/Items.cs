@@ -30,7 +30,7 @@ public class Items
         {
             return null;
         }
-        BaseItemScript itemScript = GameObject.Instantiate(ItemList[id].ItemPrefab, target.transform).GetComponent<BaseItemScript>();
+        BaseItemScript itemScript = Object.Instantiate(ItemList[id].ItemPrefab, target.transform).GetComponent<BaseItemScript>();
 
         return itemScript;
     }

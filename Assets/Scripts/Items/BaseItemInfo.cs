@@ -17,6 +17,6 @@ public class BaseItemInfo : ScriptableObject
 
     private void OnEnable()
     {
-        ItemList.Add(ID, this);
+        _ = ItemList.TryAdd(ID, this);
     }
 }

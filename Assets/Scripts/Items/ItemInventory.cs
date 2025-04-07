@@ -13,14 +13,14 @@ public class ItemInventory : MonoBehaviour
 
     private GameObject ItemHolder;
 
-    void Awake()
+    private void Awake()
     {
         CreateItemHolder();
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
-        ItemInvDestroyed.Invoke();
+        ItemInvDestroyed?.Invoke();
     }
 
     private void CreateItemHolder()
@@ -36,7 +36,13 @@ public class ItemInventory : MonoBehaviour
             return;
         }
 
-        if (!_itemObjects.ContainsKey(id))
+        if (_disabledItems.ContainsKey(id))
+        {
+            EnableItem(id);
+            _itemObjects[id].Count = amount;
+        }
+
+        else if (!_itemObjects.ContainsKey(id))
         {
             BaseItemScript itemScript = Items.AddItemObject(id, ItemHolder);
             if (itemScript == null)
@@ -46,6 +52,7 @@ public class ItemInventory : MonoBehaviour
             _itemObjects.Add(itemScript.ID, itemScript);
             itemScript.Count = amount;
         }
+
         else
         {
             _itemObjects[id].Count = amount;

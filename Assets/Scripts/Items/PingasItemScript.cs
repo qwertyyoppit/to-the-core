@@ -15,7 +15,7 @@ public class PingasItemScript : BaseItemScript
 
     protected override void ItemHandleStats()
     {
-        JumpModifier.Value = TotalValue;
+        JumpModifier.SetValue(TotalValue);
     }
 
     protected override void ItemOnEnable()
@@ -25,6 +25,6 @@ public class PingasItemScript : BaseItemScript
 
     protected override void ItemOnDisable()
     {
-        JumpModifier.MarkForDisposal();
+        JumpModifier?.MarkForDisposal();
     }
 }

@@ -3,9 +3,9 @@ using System.Linq;
 
 public class StatManager
 {
-    readonly List<StatModifier> modifiers = new();
-    readonly Dictionary<StatType, IEnumerable<StatModifier>> modifiersCache = new();
-    readonly IModifierApplicationOrder order = new ModifierApplicationOrder();
+    private readonly List<StatModifier> modifiers = new();
+    private readonly Dictionary<StatType, IEnumerable<StatModifier>> modifiersCache = new();
+    private readonly IModifierApplicationOrder order = new ModifierApplicationOrder();
 
     public float GetStat(StatType type, float baseValue)
     {
@@ -18,7 +18,7 @@ public class StatManager
 
     public void InvalidateCache(StatType type)
     {
-        modifiersCache.Remove(type);
+        _ = modifiersCache.Remove(type);
     }
 
     public void AddModifier(StatModifier modifier)
@@ -26,6 +26,10 @@ public class StatManager
         modifiers.Add(modifier);
         InvalidateCache(modifier.Type);
 
+        modifier.OnChanged += _ =>
+        {
+            InvalidateCache(modifier.Type);
+        };
         modifier.OnDispose += _ =>
         {
             InvalidateCache(modifier.Type);

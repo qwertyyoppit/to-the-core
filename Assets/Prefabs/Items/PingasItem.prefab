@@ -46,10 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemInfo: {fileID: 11400000, guid: 2d74cb68f7f79ee4285d1e39f73a49b6, type: 2}
   Count: 0
-  _dirty: 1
   JumpEffect:
-    Type: 0
-    InitialValue: 0
-    StackedValue: 0
+    Type: 2
+    InitialValue: 1.5
+    StackedValue: 1
     IncludeStackedInInitial: 0
     ModType: 0

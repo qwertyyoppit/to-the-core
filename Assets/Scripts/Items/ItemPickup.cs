@@ -29,11 +29,11 @@ public class ItemPickup : MonoBehaviour
         }
         if (Amount > 0)
         {
-            Inv.AddItem(Item.ItemName, Amount);
+            Inv.AddItem(Item.ID, Amount);
         }
         if (Amount < 0) //todo: not sure if removeitem is working, or if this is getting called correctly. fix stat reference shenanigans first
         {
-            Inv.RemoveItem(Item.ItemName, Mathf.Abs(Amount));
+            Inv.RemoveItem(Item.ID, Mathf.Abs(Amount));
         }
     }
 }
